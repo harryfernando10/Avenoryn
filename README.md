@@ -1,237 +1,521 @@
-# Avenoryn — Private life administration
+# Avenoryn — Private Life Administration
 
-Avenoryn is a private personal life-administration system for keeping important documents, commitments, purchases, renewals, deadlines, and follow-up actions together.
+**Your personal life, organized. Your next action, clear.**
+
+Avenoryn is a privacy-focused personal life-administration system that brings important documents, recurring commitments, purchases, warranties, renewals, deadlines, and follow-up actions into one place.
 
 > Calendar tells you when. Avenoryn tells you what, why, where, and what to do next.
 
-It is a student-built software project and a private system of record. Avenoryn is not a bank, cloud drive, password manager, calendar replacement, or email client.
+Built as a student software project, Avenoryn aims to reduce the friction of managing everyday administrative responsibilities through a unified, searchable workspace with document intelligence and actionable reminders.
+
+Avenoryn is not a bank, password manager, cloud-drive replacement, calendar replacement, or email client.
+
+**Repository:** [github.com/harryfernando10/Avenoryn](https://github.com/harryfernando10/Avenoryn)
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Application Architecture](#application-architecture)
+- [Technology Stack](#technology-stack)
+- [Repository Structure](#repository-structure)
+- [Requirements](#requirements)
+- [Local Installation and Setup](#local-installation-and-setup)
+- [Running Avenoryn](#running-avenoryn)
+- [Document Intelligence and OCR](#document-intelligence-and-ocr)
+- [Testing and Verification](#testing-and-verification)
+- [Security and Privacy](#security-and-privacy)
+- [Known Limitations](#known-limitations)
+- [Development Roadmap](#development-roadmap)
+- [Project Documentation](#project-documentation)
+- [Project Status](#project-status)
 
 ## Features
 
-- Account registration and login with bcrypt password hashes, signed HTTP-only session cookies, and user-scoped records.
-- Private Vault for documents, metadata, download, deletion, and version history.
-- Subscriptions, recurring payments, purchases, receipts, warranties, renewals, and deadlines.
-- Home Action Center, chronological Timeline, and derived financial commitment summaries by currency.
-- Authenticated search across supported records and a Life Inbox for uncategorized private files.
-- Optional local OCR and document review. Text extraction works without an AI provider; structured suggestions are optional and require user review and confirmation before they change Avenoryn records.
-- Command Center and in-app notifications for upcoming and overdue items.
+### 1. Authentication and Access Control
+- Account registration and login.
+- Bcrypt password hashing.
+- Signed HTTP-only session cookies.
+- User-scoped records and ownership checks.
+- Protected application routes.
 
-## Architecture
+### 2. Private Document Vault
+- Store important personal and administrative documents.
+- Maintain document metadata.
+- Upload, download, and delete documents.
+- Preserve document version history.
+- Access stored files through authenticated, ownership-checked routes.
+
+### 3. Commitments and Recurring Payments
+- Track subscriptions and recurring payments.
+- Record amounts, billing intervals, and upcoming due dates.
+- Review upcoming and overdue commitments.
+- Keep financial commitment summaries separate by currency.
+
+### 4. Purchases and Warranties
+- Record purchases and associated information.
+- Store receipts and purchase documentation.
+- Track warranties and related expiry dates.
+- Keep purchase records connected to everyday administration.
+
+### 5. Renewals and Deadlines
+- Track important renewals and deadlines.
+- Organize upcoming administrative obligations.
+- Surface items that require attention.
+
+### 6. Action Center and Timeline
+- Review important items requiring attention.
+- View administrative events chronologically.
+- Navigate from an item to its associated record.
+- Keep upcoming actions visible instead of relying on memory alone.
+
+### 7. Search and Life Inbox
+- Search supported records across the application.
+- Capture uncategorized files and administrative notes.
+- Upload and inspect Inbox attachments.
+- Edit, categorize, dismiss, and associate Inbox items with Vault documents where supported.
+
+### 8. Document Intelligence
+- Extract text locally from supported documents.
+- Use direct extraction for text-based PDFs.
+- Use Tesseract OCR for supported images and scanned PDFs.
+- Display extracted text for user review.
+- Optionally generate structured document or receipt suggestions through a configured external AI provider.
+- Require user review and confirmation before suggestions modify Avenoryn records.
+
+### 9. Command Center and Notifications
+- Open the Command Center using `Ctrl + K` or `Cmd + K`.
+- Search and navigate using keyboard interactions.
+- Access supported commands and application destinations.
+- Review in-app notifications for upcoming and overdue items.
+- Mark notifications as read individually or collectively.
+
+---
+
+## Application Architecture
+
+Avenoryn uses a modular full-stack architecture. The backend owns authentication, authorization, database access, private file storage, and domain-record updates.
 
 ```text
-React + TypeScript + Vite frontend
-              │ REST API, HTTP-only cookies
-              ▼
-Node.js + Express + TypeScript backend ─── PostgreSQL via Prisma
-              │
-              ├── private local file storage
-              └── optional Python + FastAPI OCR/AI service
+┌──────────────────────────────────────┐
+│       React + TypeScript UI          │
+│           Vite + Tailwind             │
+└──────────────────┬───────────────────┘
+                   │
+                   │ REST API
+                   │ HTTP-only sessions
+                   ▼
+┌──────────────────────────────────────┐
+│       Node.js + Express API           │
+│                                      │
+│ Authentication • Authorization       │
+│ Validation • Domain services         │
+└───────────┬──────────────┬───────────┘
+            │              │
+            ▼              ▼
+┌──────────────────┐  ┌──────────────────┐
+│ PostgreSQL       │  │ Private local    │
+│ Prisma ORM       │  │ file storage     │
+└──────────────────┘  └──────────────────┘
+            │
+            │ Authenticated service request
+            ▼
+┌──────────────────────────────────────┐
+│ Optional Python + FastAPI service    │
+│                                      │
+│ PDF extraction • Tesseract OCR       │
+│ Optional structured AI suggestions   │
+└──────────────────────────────────────┘
 ```
 
-The backend owns authentication, authorization, database access, private files, and writes to domain records. The optional AI service has no database access. The core application works without AI.
+The optional AI service has no database access. It receives authenticated processing requests from the backend and returns extracted text and, when configured, structured suggestions.
 
-## Technology
+The core application does not require an external AI provider. Local document extraction does require the optional FastAPI service to be configured and running.
 
-- Frontend: React, TypeScript, Vite, React Router, Tailwind CSS
-- Backend: Node.js 22+, Express, TypeScript, Prisma
-- Database: PostgreSQL
-- Optional AI service: Python, FastAPI, PyMuPDF, Pillow, pytesseract
-- Tests: Node.js test runner, Python `unittest`
+## Technology Stack
 
-## Repository layout
+| Layer | Technologies |
+|---|---|
+| Frontend | React, TypeScript, Vite, React Router, Tailwind CSS |
+| Backend | Node.js, Express, TypeScript |
+| Database | PostgreSQL |
+| ORM and migrations | Prisma |
+| Authentication | Bcrypt, signed HTTP-only session cookies |
+| OCR and document processing | Python, FastAPI, PyMuPDF, Pillow, pytesseract, Tesseract OCR |
+| External AI integration | Optional OpenAI-compatible provider |
+| Backend tests | Node.js built-in test runner |
+| AI service tests | Python `unittest` |
+| Browser automation | Playwright |
+
+## Repository Structure
 
 ```text
 Avenoryn/
-  frontend/                 React application
-  backend/                  Express API, Prisma schema/migrations, tests
-  ai-service/               Optional OCR and structured suggestion service
-  private-storage/          Local private files; user contents are ignored by Git
-  SRS.md                    Product requirements
-  SDD.md                    Architecture and design decisions
-  DEVELOPMENT_PLAN.md       Consolidated phase status
-  Context.md                Implementation and handoff state
+├── ai-service/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── test_main.py
+├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── migrations/
+│   ├── src/
+│   ├── package.json
+│   └── .env.example
+├── frontend/
+│   ├── src/
+│   ├── package.json
+│   └── .env.example
+├── private-storage/
+├── docs/
+│   └── NAME_AVAILABILITY.md
+├── .env.example
+├── README.md
+├── SRS.md
+├── SDD.md
+├── DEVELOPMENT_PLAN.md
+└── Context.md
 ```
+
+The private-storage directory is used for local file storage. User file contents and environment secrets must not be committed to Git.
+
+---
 
 ## Requirements
 
-- Node.js 22 or newer and npm
-- PostgreSQL
-- Optional AI/OCR: Python 3.10+; Tesseract OCR executable for image and scanned-PDF OCR
-- Optional structured AI suggestions: credentials for a supported OpenAI-compatible provider
+- Windows, macOS, or Linux.
+- Node.js 22 or newer and npm.
+- PostgreSQL.
+- Python 3.10 or newer for the optional AI service.
+- Tesseract OCR for image and scanned-PDF text extraction.
+- External AI-provider credentials only if structured AI suggestions are required.
 
-## Local setup
+The commands below use Windows PowerShell.
 
-### 1. Configure environment files
+## Local Installation and Setup
 
-From the repository root:
-
-```powershell
-  if (!(Test-Path backend/.env)) { Copy-Item backend/.env.example backend/.env }
-  if (!(Test-Path frontend/.env)) { Copy-Item frontend/.env.example frontend/.env }
-  if (!(Test-Path ai-service/.env)) { Copy-Item ai-service/.env.example ai-service/.env }
-```
-
-Only copy an example when its `.env` file does not already exist; edit existing files in place. Set `DATABASE_URL` to a dedicated PostgreSQL database and replace `SESSION_SECRET` with a random value. To enable local extraction, use one identical random `AI_SERVICE_TOKEN` in both service files and set `AI_SERVICE_URL=http://127.0.0.1:8000` in `backend/.env`. Provider keys are not needed for local extraction.
-
-Generate a token and session secret in PowerShell without displaying them in this document:
+### 1. Clone the repository
 
 ```powershell
-[Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(48))
+git clone https://github.com/harryfernando10/Avenoryn.git
+cd Avenoryn
 ```
 
-Environment variable names are documented in the three service example files. The root `.env.example` is a quick reference. Never commit real `.env` files or provider credentials.
+If you already have the repository locally, open PowerShell in the existing project directory instead.
 
-### 2. Install backend dependencies and apply migrations
+### 2. Configure environment files
+
+Run these commands from the repository root. They copy example files only when the corresponding environment file does not already exist.
+
+```powershell
+if (!(Test-Path backend/.env)) {
+    Copy-Item backend/.env.example backend/.env
+}
+
+if (!(Test-Path frontend/.env)) {
+    Copy-Item frontend/.env.example frontend/.env
+}
+
+if (!(Test-Path ai-service/.env)) {
+    Copy-Item ai-service/.env.example ai-service/.env
+}
+```
+
+The AI service environment file is needed only if you intend to run that service.
+
+Edit the relevant environment files and configure:
+
+- `DATABASE_URL` — the intended PostgreSQL database.
+- `SESSION_SECRET` — a strong, randomly generated secret of at least 32 characters.
+- `AI_SERVICE_URL` — `http://127.0.0.1:8000` when enabling local extraction.
+- `AI_SERVICE_TOKEN` — the same strong, randomly generated token in both `backend/.env` and `ai-service/.env`.
+
+Generate a random secret in PowerShell using:
+
+```powershell
+[Convert]::ToBase64String(
+    [Security.Cryptography.RandomNumberGenerator]::GetBytes(48)
+)
+```
+
+Run this separately for each secret. Use the same generated token in both services for `AI_SERVICE_TOKEN`, but use a different secret for `SESSION_SECRET`.
+
+**Important:** never replace an existing `.env` file blindly. Preserve its current values and edit only the settings that need changing. Never commit real `.env` files or provider credentials.
+
+### 3. Install backend dependencies
 
 ```powershell
 cd backend
 npm install
-npx prisma migrate deploy
-npm run dev
 ```
 
-The API listens on `http://localhost:3001`. Liveness and database readiness are available at `/api/health` and `/api/ready`. Use a separate local database for tests; do not run test setup against a database containing records you need.
+### 4. Configure and migrate PostgreSQL
 
-### 3. Run the frontend
+Ensure PostgreSQL is running and `DATABASE_URL` points to the intended database.
 
-In another terminal:
+Then run:
+
+```powershell
+npx prisma migrate deploy
+```
+
+This applies pending migrations to the database selected by `DATABASE_URL`. Verify the database target before running this command. Do not run migrations or destructive test setup against a database containing records you need unless that is the intended target.
+
+### 5. Install frontend dependencies
+
+Open another PowerShell terminal from the repository root:
 
 ```powershell
 cd frontend
 npm install
-npm run dev
 ```
 
-Open `http://localhost:5173`, register an account, and use the authenticated `/app/*` areas. Vite proxies `/api` to the backend during development.
+### 6. Install the optional AI service dependencies
 
-### Optional OCR and AI service
-
-Install Python dependencies in `ai-service` and run FastAPI:
+For local document extraction, open another PowerShell terminal from the repository root:
 
 ```powershell
 cd ai-service
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-The AI service provides `/health` and a configuration-aware `/ready` endpoint. Keep the listener bound to `127.0.0.1`; it has no database credentials or database connection.
+Install Tesseract OCR separately and ensure the executable is accessible. If it is not on `PATH`, configure `TESSERACT_CMD` in `ai-service/.env` with the local executable path.
 
-Set the same `AI_SERVICE_TOKEN` in both `.env` files and `AI_SERVICE_URL=http://127.0.0.1:8000` in the backend file. The FastAPI service binds to loopback only. Install Tesseract OCR for images and scanned PDFs; when it is not on `PATH`, set `TESSERACT_CMD` to the local executable path in `ai-service/.env`. Text-based PDFs use direct extraction. The provider defaults to disabled; extraction still works. Structured suggestions require `AI_PROVIDER=openai_compatible`, `AI_API_KEY`, and `AI_MODEL`. Configure `AI_API_BASE_URL` only for a trusted HTTPS provider (localhost is allowed for development).
+---
 
-### Reliable three-service startup
+## Running Avenoryn
 
-Use three PowerShell terminals from the repository root. First make sure `backend/.env` and `ai-service/.env` contain the same `AI_SERVICE_TOKEN`, and that the backend has `AI_SERVICE_URL=http://127.0.0.1:8000`. Keep the backend's `DATABASE_URL` pointed at the intended development database. Changes to a service's `.env` take effect only after that service is restarted.
+Once dependencies and configuration are set up, use separate PowerShell terminals to run the services.
 
-1. **Terminal 1 — database and backend:** start PostgreSQL, then run:
+### Terminal 1 — Backend
 
-   ```powershell
-   cd backend
-   npm install
-   npx prisma migrate deploy
-   npm run dev
-   ```
-
-   Wait for the backend to start, then verify `http://localhost:3001/api/ready` reports `"status":"ready"` and `"database":"up"`.
-
-2. **Terminal 2 — local extraction service:**
-
-   ```powershell
-   cd ai-service
-   .\.venv\Scripts\Activate.ps1
-   uvicorn main:app --host 127.0.0.1 --port 8000
-   ```
-
-   Wait for `http://127.0.0.1:8000/ready` to respond successfully. This service performs local extraction with no external provider credentials; structured suggestions remain disabled unless explicitly configured.
-
-3. **Terminal 3 — frontend:**
-
-   ```powershell
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-   Open `http://localhost:5173`. To pick up changed backend or AI-service environment values, stop and restart those services; restart Vite too only when its own environment or frontend configuration changed. Restarting does not reset the database or private storage.
-
-Review the AI privacy implications before enabling an external provider: the extracted document text leaves the local service and is sent to that provider. Never use real sensitive documents for public demos or tests.
-
-## Database and files
-
-Prisma schema and committed migrations are under `backend/prisma`. Use `npx prisma migrate deploy` for an existing database. Do not reset a database with data you need. Vault and Inbox file bytes live under the ignored `private-storage/` directory by default; they are served only through authenticated, ownership-checked API routes. Back up the database and private file storage together using a secure process appropriate to your deployment.
-
-## Verification
-
-Run commands from each service directory:
+Start PostgreSQL first. Then:
 
 ```powershell
-# backend
+cd "C:\Projects\Avenoryn\backend"
+npm run dev
+```
+
+Replace the example path with your actual repository path.
+
+The API listens on:
+
+- `http://localhost:3001`
+- Liveness endpoint: `/api/health`
+- Database readiness endpoint: `/api/ready`
+
+The readiness endpoint should report a ready application and an available database.
+
+### Terminal 2 — Optional document extraction service
+
+Activate the Python environment and start FastAPI:
+
+```powershell
+cd "C:\Projects\Avenoryn\ai-service"
+.\.venv\Scripts\Activate.ps1
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
+```
+
+The service provides `/health` and `/ready` endpoints. Keep it bound to loopback for local development.
+
+Local extraction requires the backend and FastAPI service to be correctly configured and running. If you change the backend environment, restart the backend. If you change the AI service environment, restart FastAPI.
+
+### Terminal 3 — Frontend
+
+```powershell
+cd "C:\Projects\Avenoryn\frontend"
+npm run dev
+```
+
+Open:
+
+**http://localhost:5173**
+
+Register an account and use the authenticated application.
+
+Vite proxies API requests to the backend during development.
+
+If you only want to use the core application without local document extraction, you can omit the AI service and its configuration.
+
+Restarting the services does not reset the database or private storage.
+
+---
+
+## Document Intelligence and OCR
+
+Avenoryn separates local text extraction from optional structured AI suggestions.
+
+### Local extraction
+
+- **Text-based PDFs:** text is extracted directly without OCR.
+- **Scanned PDFs:** OCR is required.
+- **JPEG, PNG, and WEBP images:** OCR is required.
+
+Image and scanned-PDF OCR depend on Tesseract being installed and correctly configured.
+
+### Structured AI suggestions
+
+Structured suggestions are disabled by default. To enable them, configure the supported OpenAI-compatible provider in `ai-service/.env`:
+
+- `AI_PROVIDER=openai_compatible`
+- `AI_API_KEY`
+- `AI_MODEL`
+
+Configure `AI_API_BASE_URL` only for a trusted HTTPS provider, except for explicitly permitted local development endpoints.
+
+When structured suggestions are requested, extracted document text is sent to the configured external provider. Review the provider's privacy and data-handling policies before enabling this feature.
+
+Avenoryn validates returned suggestions and requires user confirmation before saving them. AI-generated information can be incorrect and should always be reviewed.
+
+No external-provider success is claimed unless a real provider call has been performed and verified.
+
+## Testing and Verification
+
+Run commands from the relevant service directory.
+
+### Backend
+
+```powershell
+cd backend
 npm test
 npm run typecheck
 npm run build
 npm run prisma:validate
 npm run prisma:generate
-npm run prisma:deploy
+```
 
-# frontend
+To apply migrations:
+
+```powershell
+npm run prisma:deploy
+```
+
+Only run migration commands against the intended database.
+
+### Frontend
+
+```powershell
+cd frontend
 npm run typecheck
 npm run build
+```
 
-# AI service
+### AI service
+
+```powershell
+cd ai-service
 python -m unittest -v
+```
 
-# browser E2E (run from frontend; uses the isolated avenoryn_test database)
+Real OCR tests require Tesseract and the relevant image/PDF dependencies.
+
+### Playwright browser tests
+
+Run from the frontend directory:
+
+```powershell
+cd frontend
 npm run test:e2e
 ```
 
-`prisma:deploy` applies pending migrations; use it only against the intended database. The Playwright command starts its own backend and frontend on ports 3002 and 5174, derives `avenoryn_test` from the configured local `backend/.env` URL, and uses synthetic accounts and files. Create and migrate that dedicated test database before running it; never point it at a database containing records you need. Browser screenshots and traces are written under ignored `frontend/test-results/`. Real OCR additionally requires Tesseract. The AI service tests distinguish local extraction from mocked provider failures; no external-provider success is claimed unless valid credentials are configured and a real provider call is made.
+The Playwright setup uses a separate `avenoryn_test` database and starts its own backend and frontend on ports 3002 and 5174. Create and migrate the dedicated test database before running E2E tests.
 
-## Docker and deployment
+The test setup derives the test database name from the configured local backend database URL. Verify the configuration and database target before running tests. Never run test setup against a database containing records you need.
 
-No Docker or cloud deployment configuration is included. Run the frontend, backend, PostgreSQL, and optional AI service separately as described above. A production deployment must provide environment secrets through its runtime configuration, use HTTPS, configure `FRONTEND_ORIGIN` and `DATABASE_URL` for that deployment, persist and protect private storage, and back up both database and files. Do not expose private storage as a static directory.
+Playwright screenshots and traces are written under the ignored `frontend/test-results/` directory.
 
-## Security and privacy
+### Verified release checks
 
-- User-scoped queries and ownership checks protect records and files; session cookies are HTTP-only, `SameSite=Lax`, and marked `Secure` in production. State-changing browser requests must match the configured frontend origin.
-- Passwords are stored as bcrypt hashes. API errors omit stack traces and database details.
-- Uploads are size-limited, checked against allowed extensions/MIME hints and file signatures, and stored under generated keys outside public assets.
-- AI is optional. The backend authenticates to the AI service with a shared token and validates returned suggestions; user confirmation is required before saving.
-- `.env` files, build outputs, dependency directories, caches, and private-storage contents are excluded from Git. This is not a substitute for reviewing the tracked files before publication.
+The recorded release verification includes:
 
-## Limitations
+- Backend: **78 passed, 0 failed, 0 skipped**, across 14 suites.
+- AI service: **13 passed, 0 failed**, including real local Tesseract OCR on synthetic image and scanned-PDF inputs.
+- Frontend and backend typechecks/builds: passed.
+- Prisma schema validation and migration status: passed; all five migrations were current.
+- Prisma Client generation: succeeded in a clean temporary installation with aligned Prisma 6.12.0 packages.
+- Playwright: **2 passed, 0 failed**, across desktop and 390px mobile runs.
+- `npm audit`: zero vulnerabilities at the time of the recorded check.
+- `git diff --check` and the staged secret/artifact audit: passed.
 
-- The application uses local private file storage; it does not provide managed cloud storage, replication, or automated backups.
-- OCR quality depends on document quality and local Tesseract installation. AI suggestions may be incorrect and must be reviewed.
-- External AI providers receive document text when configured and used.
-- No email delivery, scheduled notification worker, password reset, email verification, MFA, or shared household accounts are included.
-- Docker and automated cloud deployment are not included.
+The Playwright scenarios covered multiple core workflows, including authentication, protected routes, Vault operations, commitments, purchases/warranties, renewals/deadlines, Inbox triage and persistence, search, notifications, Command Center interactions, and cross-user document access. The recorded browser suite did not exercise AI review/confirmation end to end or fully assert Timeline and financial summary values.
 
-## Project status and roadmap
+These results describe the recorded verification run, not a guarantee that every possible input or environment has been tested.
 
-Phases 0–15 are implemented. Phase 16 is the final production-hardening and release phase; this project has no further planned development phase. The exact phase names and release record are in [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) and [Context.md](Context.md).
+---
 
-| Phase | Area | Status |
-| --- | --- | --- |
-| 0–11 | Foundation through Timeline | Complete |
+## Security and Privacy
+
+Avenoryn is designed with several safeguards:
+
+- Passwords are stored as bcrypt hashes.
+- Session cookies are HTTP-only and use `SameSite=Lax`; production cookies are marked `Secure`.
+- User-scoped queries and ownership checks protect records and files.
+- State-changing browser requests must match the configured frontend origin.
+- Uploads are size-limited and validated against permitted file types and signatures.
+- Stored files use generated keys and are not served from public static directories.
+- The backend authenticates to the optional AI service using a shared token.
+- AI suggestions are validated and require user confirmation.
+- Environment files, dependency directories, build outputs, caches, and private-storage contents are excluded from Git.
+
+For public demonstrations and testing, use synthetic accounts and documents. Never commit or expose real personal documents, provider credentials, session secrets, or private files.
+
+Local private storage does not provide managed replication or automated backups. Back up the database and private files together using a secure process appropriate to your deployment.
+
+## Known Limitations
+
+- File storage is local; managed cloud storage, replication, and automated backups are not included.
+- OCR quality depends on document quality and Tesseract configuration.
+- Structured AI suggestions require an explicitly configured external provider and may be incorrect.
+- External AI providers receive extracted document text when configured and used.
+- Live external AI-provider behavior has not been verified as part of the recorded release checks.
+- Email delivery and a scheduled notification worker are not included.
+- Password reset, email verification, multi-factor authentication, and shared household accounts are not included.
+- Docker and automated cloud deployment configuration are not included.
+- Browser testing covers representative workflows rather than every possible interaction.
+
+---
+
+## Development Roadmap
+
+Avenoryn was developed in **17 numbered phases, from Phase 0 through Phase 16**. Each phase represents a distinct part of the implementation.
+
+| Phase | Name | Status |
+|---:|---|---|
+| 0 | Project Initialization | Complete |
+| 1 | Design System and Application Shell | Complete |
+| 2 | Database and Backend Foundation | Complete |
+| 3 | Authentication and Authorization | Complete |
+| 4 | Core Data Model | Complete |
+| 5 | Vault and Documents | Complete |
+| 6 | Document Versioning | Complete |
+| 7 | Commitments | Complete |
+| 8 | Purchases and Warranties | Complete |
+| 9 | Renewals and Deadlines | Complete |
+| 10 | Action Center | Complete |
+| 11 | Timeline | Complete |
 | 12 | Financial Commitments | Complete |
-| 13 | Search + Life Inbox | Complete |
-| 14 | AI Intelligence | Complete |
-| 15 | Command Center + Notifications | Complete |
-| 16 | Production Hardening + Release | Final planned phase |
+| 13 | Search and Life Inbox | Complete |
+| 14 | AI Document Intelligence | Complete |
+| 15 | Command Center and Notifications | Complete |
+| 16 | Production Hardening and Release | Complete |
 
-## Screenshots
+The original development phases are complete, and the release is published. The roadmap is retained for traceability rather than as a list of planned features.
 
-Screenshots can be added here when synthetic demo data and a safe capture environment are available. Do not use real personal documents or account data.
+For detailed implementation history, requirements, architecture decisions, and release notes, see the project documentation below.
 
-## Project documents
+## Project Documentation
 
-- [SRS.md](SRS.md) — product requirements
-- [SDD.md](SDD.md) — architecture and design direction
-- [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) — implementation phases
-- [Context.md](Context.md) — current implementation and release handoff
-- [docs/NAME_AVAILABILITY.md](docs/NAME_AVAILABILITY.md) — preliminary name screening and its limitations
+- [SRS.md — Software Requirements Specification](https://github.com/harryfernando10/Avenoryn/blob/master/SRS.md)
+- [SDD.md — Software Design Document](https://github.com/harryfernando10/Avenoryn/blob/master/SDD.md)
+- [DEVELOPMENT_PLAN.md — Development Roadmap](https://github.com/harryfernando10/Avenoryn/blob/master/DEVELOPMENT_PLAN.md)
+- [Context.md — Implementation Context and Release Handoff](https://github.com/harryfernando10/Avenoryn/blob/master/Context.md)
+- [docs/NAME_AVAILABILITY.md — Preliminary Name Screening](https://github.com/harryfernando10/Avenoryn/blob/master/docs/NAME_AVAILABILITY.md)
 
 ## Repository
 
-The existing GitHub repository is currently [github.com/harryfernando10/LifeOS](https://github.com/harryfernando10/LifeOS). Rename it to `Avenoryn` in GitHub repository Settings before changing the clone URL; the local remote still points to the existing repository identity.
+**GitHub:** [github.com/harryfernando10/Avenoryn](https://github.com/harryfernando10/Avenoryn)
+
+Avenoryn is a student-built software project intended to demonstrate full-stack engineering, secure data handling, document processing, and practical personal administration workflows.
