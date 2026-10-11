@@ -1,8 +1,32 @@
-# LifeOS — Context
+# Avenoryn — Context
 
 **Purpose:** Living implementation state for agents and developers. Read this before writing code.
 
-**Last updated:** 2026-10-04 (Phase 16 release audit)
+**Last updated:** 2026-10-12 (Phase 16 final quality pass)
+
+## Current quality-pass handoff (2026-10-12)
+
+- **Status:** IN PROGRESS. Rebrand, isolated database checks, backend and AI-service tests, frontend builds, desktop/mobile Playwright checks, and dependency audit are complete. A clean non-OneDrive install verifies Prisma generation; generation inside this OneDrive checkout still fails at the engine rename. GitHub repository rename is still a required manual action before pushing.
+- **Identity:** Avenoryn; repository slug intended as `avenoryn`. Preliminary public-web screening and uncertainty are recorded in `docs/NAME_AVAILABILITY.md`.
+- **Git state:** final audit began on branch `master` at HEAD `22561643bdf37f62460b5e7fd0eabcdb6feb002f`. The reviewed changes are now included in the local release commit on `master`; origin remains `https://github.com/harryfernando10/LifeOS.git`. The pre-existing backend package edits were reviewed and retained, with Prisma versions aligned as described below.
+- **AI repair:** the user confirmed local document extraction visibly succeeds in the actual UI after restarting the backend, frontend, and FastAPI service. The most likely explanation for the earlier disabled-configuration response is stale process configuration: backend `dotenv.config()` and AI `load_dotenv()` read environment values at process startup, and Vite reads its environment at startup; changing `.env` files does not update already-running processes. Provider credentials remain unset; this confirms local extraction only, not a live external AI-provider call. The README now documents a reliable three-terminal startup sequence.
+- **OCR:** `C:\Program Files\Tesseract-OCR\tesseract.exe` reports version `5.5.3.20260724`. Real synthetic image and scanned-PDF OCR tests pass.
+- **Database isolation:** PostgreSQL 18 service `postgresql-x64-18` is running on `localhost:5432`. The configured development database `lifeos` was checked read-only; its account can create databases. A new empty `avenoryn_test` database was verified before migration. All Prisma checks, migrations, backend tests, and Playwright runs used a process-only test `DATABASE_URL` derived from `backend/.env`. `.env` was not overwritten; the development database was not migrated, reset, truncated, or dropped.
+- **Database-backed verification:** all five migrations are applied to `avenoryn_test`; Prisma reports it up to date. Latest backend `npm test`: **78 passed, 0 failed, 0 skipped** across 14 suites. Backend typecheck and build pass.
+- **Release:** local commit `Finalize Avenoryn release quality pass` is complete. No push or repository rename has been performed. GitHub CLI was not found in PATH; the manual rename of the existing repository remains pending.
+
+### Quality-pass work and verification (2026-10-12)
+
+- **Brand:** Avenoryn is now used in the live header, document title/metadata, current docs, package names, and examples. The repo-wide remaining-name categories are documented in `docs/NAME_AVAILABILITY.md`. The old GitHub URL remains because the remote has not been renamed. Existing `lifeos.sid` cookie name is retained for session compatibility.
+- **AI changes:** Backend and AI-service examples now explain loopback setup and shared token configuration. The ignored backend `.env` gained `AI_SERVICE_URL` and a newly generated shared token; `ai-service/.env` was created from its example and given the matching token and local `TESSERACT_CMD`. No prior environment values were replaced. The provider remains disabled and no provider credential was configured.
+- **AI behavior:** The service now returns extracted text with `suggestion: null` and a safe explanation when the external provider is disabled or errors. The backend validates that contract. The Inbox UI shows extracted text and says structured suggestions are unavailable instead of reporting total failure. Added a configuration-aware `/ready` route and specific safe diagnostics for missing settings, unreachable service, and token mismatch.
+- **Observed live integration:** Started FastAPI bound to `127.0.0.1:8000`, sent a synthetic text PDF through the authenticated HTTP endpoint, confirmed `pdf-text`, marker `41628`, `suggestion: null`, `external_provider_used: false`, and `/ready` status 200. The temporary service process was stopped after verification.
+- **Prisma:** the pre-existing working-tree edit had CLI/engines 6.12.0 with `@prisma/client` 6.19.3. A clean install showed that Prisma generated a 6.12.0 Client against the 6.19.3 runtime package. I aligned CLI and Client to **6.12.0**, preserving the chosen CLI downgrade and fixing the reproducible version mismatch; `npm audit` then reported **0 vulnerabilities** (the 6.19 CLI had three high findings through `@prisma/config`/`deepmerge-ts`). A clean temporary install outside OneDrive generated the aligned client, validated the schema, and found the isolated database up to date. Backend tests passed there, 78/78. Generation in the actual OneDrive checkout still fails with `EPERM` renaming `backend/node_modules/prisma/query_engine-windows.dll.node`; the same matching version generated successfully outside OneDrive. No inspected Node process had the query engine loaded, though OneDrive or endpoint protection locking cannot be ruled out. The live backend on port 3001 was left running and its dependencies were not replaced.
+- **Frontend and Playwright:** frontend typecheck/build pass. Playwright run after adding cross-user download/version checks: **2 passed, 0 failed** across desktop Chromium and 390px mobile Chromium. The single scenario covers registration, protected-route redirect, sign-out/sign-in, Vault upload/version-history/current download, subscription, purchase/warranty, financial page, renewal/deadline creation, Timeline navigation, Inbox capture/triage with persisted status, search, derived notifications, Ctrl+K open/close, reload persistence, cross-user document-list isolation and 404s for cross-user download/version listing, and horizontal overflow checks. Eight principal pages are captured at both viewports in ignored `frontend/test-results/`. Console errors were limited to unauthenticated `/api/auth/me` probes; no failed browser requests were recorded. Playwright does not exercise the AI review/confirmation UI or assert Timeline/financial values beyond rendered records/pages.
+- **Visual QA fix:** mobile inspection found Vault horizontal overflow at 390px. The grid/detail children now constrain their minimum width and long titles wrap. Final mobile overflow assertions pass. Desktop/mobile screenshots were inspected for Home, Vault, Commitments/Purchases, Financial, Renewals/Deadlines, Timeline, Inbox, and Search.
+- **AI tests:** AI service `unittest` rerun outside the sandbox: **13 passed, 0 failed**, including real local Tesseract on synthetic image and scanned-PDF inputs, direct text-PDF extraction, disabled-provider behavior, and mocked provider failure. A sandboxed run stalled at Windows `TestClient` startup; the same suite passed in the normal local environment. Backend AI coverage includes mocked suggestions and confirmation through domain services. A prior live local FastAPI HTTP check returned extracted synthetic text with `suggestion: null`, `external_provider_used: false`, and `/ready` 200; the user has now confirmed extraction in the actual UI after service restarts. No external provider credential is configured; no live external call was made. Browser-level AI confirmation was not exercised.
+- **Repository/artifact audit:** `git diff --check` passes. The staged-path audit covered 50 intended source/docs/test files and found no credential-shaped matches, real `.env` files, private files, browser auth state, or generated screenshots. Playwright screenshots/results and `backend/.e2e-private-storage/` remain ignored synthetic test artifacts. No secret values were printed. GitHub CLI is unavailable; current origin remains `https://github.com/harryfernando10/LifeOS.git` with upstream `origin/master`. No push or repository rename has been performed.
+- **Next steps:** rename the existing GitHub repository manually in Settings to `Avenoryn` (do not create a duplicate). After that rename, update and verify `origin` as `https://github.com/harryfernando10/Avenoryn.git`, verify upstream, and push the local release commit without force. The local OneDrive-only Prisma rename failure remains recorded; matching-version generation and backend tests passed in an isolated non-OneDrive copy.
 
 ---
 
@@ -12,7 +36,7 @@ Phase 16 — Production Hardening + Release (checks passed; final commit and pub
 
 ## Status
 
-Phases 0–15 are implemented locally. Phase 16 is the final planned phase. The required checkpoint was verified before changes: `3f4893137911549f5929c275f5bda787dbc52583` (`feat: complete phase 15 - command center and notifications`) on `master`, with a clean working tree and four local commits ahead of `origin/master`. The existing remote is `https://github.com/harryfernando10/LifeOS.git`. This release snapshot was prepared before its final commit and publication; final GitHub verification is part of the release handoff. The verified checkout includes ignored local `.env` files and ignored private-storage data; neither is part of the tracked repository, and the data has been left untouched.
+The original 2026-10-04 Phase 16 snapshot referenced checkpoint `3f4893137911549f5929c275f5bda787dbc52583`. The 2026-10-04 and 2026-10-11 entries below are historical records; the 2026-10-12 quality-pass handoff above is authoritative for current branch, HEAD, environment, database, and test state.
 
 ### Final architecture and release snapshot
 
@@ -34,7 +58,7 @@ Phases 0–15 are implemented locally. Phase 16 is the final planned phase. The 
 - `npm run prisma:deploy`: passed; five migrations found, none pending in the configured local database.
 - Frontend `npm run typecheck` and `npm run build`: passed. No dedicated frontend test script exists.
 - AI service `.venv\\Scripts\\python.exe -m unittest -v`: 11/11 passed. PyMuPDF emitted SWIG deprecation warnings.
-- Real OCR could not be rerun in this checkout because the Tesseract executable is not installed or discoverable. Prior Phase 14 Context notes record a synthetic Tesseract 5.5.3 verification on the earlier local setup; this does not substitute for a current runtime check.
+- At the time of the original 2026-10-04 snapshot, the Tesseract executable could not be found. The executable is present in the 2026-10-11 environment; see the current quality-pass handoff for fresh synthetic OCR results as they are completed.
 - `git ls-files` and the final diff were reviewed. Tracked files contain expected source, migrations, tests, examples, and docs; credential-pattern matches are limited to synthetic test passwords. Ignore checks confirmed `.env`, node_modules, builds, Python virtual environment, caches, logs, and private-storage contents are excluded. No local private files were read or staged.
 - UI reviewed from source. No obvious high-impact visual defect justified a design change; no browser-based visual review was performed in this environment.
 - Phase 16 code change: added `backend/src/middleware/validateRequestOrigin.ts` and two integration checks in `backend/src/security/origin.test.ts`; registered the guard for unsafe requests and updated the authentication rate-limit comment to remove its obsolete future-phase reference.
@@ -45,7 +69,7 @@ Phases 0–15 are implemented locally. Phase 16 is the final planned phase. The 
 - [x] Run backend, frontend, AI-service, Prisma, and migration checks available in this environment.
 - [x] Update README and consolidate the development roadmap to Phases 0–16.
 - [x] Finish the final security, tracked-file, diff, and documentation audit.
-- [ ] Create one final commit: `chore: finalize LifeOS for release`.
+- [ ] Create one final commit: `chore: finalize Avenoryn for release`.
 - [ ] Push `master` normally to the existing `origin` and verify local `master` matches `origin/master`.
 - [ ] Record final GitHub publication state in the release handoff.
 
@@ -58,7 +82,7 @@ Phases 0–15 are implemented locally. Phase 16 is the final planned phase. The 
 - Phase 1 — Design System + Application Shell
 - Phase 2 — Database + Backend Foundation
 - Phase 3 — Authentication + Authorization
-- Phase 4 — Core LifeOS Data Model
+- Phase 4 — Core Avenoryn Data Model
   - Prisma entities: Document, DocumentVersion, Subscription, RecurringPayment, Purchase, Warranty, Deadline, Renewal, InboxItem, Notification, AuditLog
   - User ownership on all user-scoped domain tables
   - Purchase → Warranty (1:0..1)
@@ -623,11 +647,11 @@ Logout deletes the server session and clears the cookie.
 
 ## Git state
 
-- Phase 0: `chore: initialize LifeOS frontend and backend foundations`
+- Phase 0: `chore: initialize Avenoryn frontend and backend foundations`
 - Phase 1: `feat: complete phase 1 - design system and application shell`
 - Phase 2: `feat: complete phase 2 - database foundation`
 - Phase 3: `feat: complete phase 3 - authentication and authorization`
-- Phase 4: `feat: complete phase 4 - core LifeOS data model`
+- Phase 4: `feat: complete phase 4 - core Avenoryn data model`
 - Phase 5: `feat: complete phase 5 - vault and documents`
 - Phase 6: `feat: complete phase 6 - document versioning`
 - Phase 7: `feat: complete phase 7 - commitments`
@@ -686,9 +710,9 @@ The original Phase 14 handoff pointed to Phase 15. This marker is superseded by 
 
 ## Canonical product reminder
 
-LifeOS is a unified personal life-administration system.
+Avenoryn is a unified personal life-administration system.
 
-> Calendar tells you when. LifeOS tells you what, why, where, and what to do next.
+> Calendar tells you when. Avenoryn tells you what, why, where, and what to do next.
 
 Stack: React + TypeScript + Vite + React Router + Tailwind (frontend); Node.js + Express + TypeScript (backend); PostgreSQL + Prisma; optional Python/FastAPI AI after core works; private local file storage first.
 
@@ -708,7 +732,7 @@ AI is a suggestion layer. Core app must work if AI is unavailable. AI must not a
 | 2026-10-01 | Phase 0 complete: runnable frontend and backend, health check, TypeScript/build verified. No Prisma, auth, product features, or AI. Next: Phase 1 (not started). |
 | 2026-10-02 | Git initialized; Phase 0 foundation committed. Phase 1 complete: design system, Login/Register UI, protected `/app/*` shell with empty placeholders. Next: Phase 2. |
 | 2026-10-02 | Phase 2 complete: PostgreSQL + Prisma, layered backend, health/ready. Next: Phase 3. |
-| 2026-10-02 | Phase 3 complete: bcrypt + HTTP-only session cookies, auth APIs, frontend wired, ownership foundation. Next: Phase 4 — Core LifeOS Data Model. |
+| 2026-10-02 | Phase 3 complete: bcrypt + HTTP-only session cookies, auth APIs, frontend wired, ownership foundation. Next: Phase 4 — Core Avenoryn Data Model. |
 | 2026-10-02 | Phase 4 complete: core Prisma domain model + migration; no domain CRUD/UI. Next: Phase 5 — Vault / Documents. |
 | 2026-10-02 | Phase 5 complete: private vault upload/list/metadata/download/delete with ownership-checked storage. Next: Phase 6 — Document Versioning. |
 | 2026-10-02 | Phase 6 complete: document version history, replace upload, per-version download, ownership tests. Next: Phase 7 — Commitments. |
@@ -753,7 +777,7 @@ AI is a suggestion layer. Core app must work if AI is unavailable. AI must not a
 - **Database/migrations:** None. Existing `Document`, `DocumentVersion`, `InboxItem`, `Purchase`, `Warranty`, and `AuditLog` are reused. Extracted text and suggestions are not persisted. Confirmation calls existing Document/Purchase/Warranty domain logic and audit logging.
 - **API:** `POST /api/ai/inbox/:id/process`; `POST /api/ai/documents/:id/process`; `POST /api/ai/inbox/:id/confirm-document`. All require existing session auth. Purchase and Warranty confirmation use existing `POST /api/purchases` and `PUT /api/purchases/:id/warranty` endpoints.
 - **Frontend:** `AIInboxReview` is integrated into the existing protected `/app/inbox` page. It exposes idle, processing, errors, extracted text, editable document/receipt suggestions, reject, confirmation, and optional warranty form. Existing Vault documents can be linked to Inbox and processed from that review. No new route was added.
-- **Result contract:** `AIProcessResponse` contains `extractedText`, `textSource` (`pdf-text` or `ocr`), `externalProviderUsed`, and a discriminated `suggestion.kind` (`document` or `receipt`). Document values use the existing `DocumentCategory` enum and supported Document fields. Receipt values map to Purchase fields. Warranty values are optional and accepted only as suggestions; LifeOS never infers a warranty duration. Both service and Node reject malformed output.
+- **Result contract:** `AIProcessResponse` contains `extractedText`, `textSource` (`pdf-text` or `ocr`), `externalProviderUsed`, and a discriminated `suggestion.kind` (`document` or `receipt`). Document values use the existing `DocumentCategory` enum and supported Document fields. Receipt values map to Purchase fields. Warranty values are optional and accepted only as suggestions; Avenoryn never infers a warranty duration. Both service and Node reject malformed output.
 - **Real OCR verification:** Tesseract reported version `5.5.3.20260724`. A synthetic PNG containing `LIFEOS OCR TEST 4829` returned exactly `LIFEOS OCR TEST 4829`. A synthetic image-based PDF followed the `ocr` path and returned `LIFEOS OCR TEST 4829`. A synthetic text PDF followed the `pdf-text` path and returned `SYNTHETIC TEXT PDF 7316`. Temporary fixtures were created outside the repository and removed automatically. `TESSERACT_CMD` was set only for these local commands; no machine-specific value was saved in project files.
 - **Tests/results:** `backend/src/ai/ai.test.ts` adds 8 mocked integration tests covering auth, ownership, unavailable configuration, validated suggestions, malformed output, no mutation before confirmation, Vault/Purchase confirmation, explicit and absent warranty dates, and document ownership. `ai-service/test_main.py` has 11 unit tests covering text PDF, scanned PDF/image OCR paths with mocked OCR, missing Tesseract, OCR failure, unsupported/corrupt files, empty text, AI unavailable/provider failure, malformed suggestions, and service-token enforcement. `backend npm test`: 75/75 pass. Python `python -m unittest -v`: 11/11 pass (with local Tesseract path configured). Prisma validate/generate pass. Backend/frontend typechecks and builds pass. `git diff --check` passes.
 - **Security/privacy:** No frontend API key; raw paths/storage keys are not returned; service token is shared only through environment variables; no AI-side database access; files remain private and are read only after owner checks; API calls are HTTPS outside loopback; provider sends extracted text only; user confirms before any domain writes; writes use existing validators, ownership checks, and audits; provider tests are mocked. Existing `.env` files and private-storage contents were not staged or inspected for values.

@@ -12,7 +12,7 @@ import { PageHeader } from "../components/ui/PageHeader";
 function urgencyClassName(urgency: ActionCenterItem["urgency"]): string {
   return urgency === "overdue"
     ? "text-red-700 bg-red-50"
-    : "text-[var(--lifeos-accent)] bg-[var(--lifeos-accent-soft)]";
+    : "text-[var(--avenoryn-accent)] bg-[var(--avenoryn-accent-soft)]";
 }
 
 export function HomePage() {
@@ -64,13 +64,13 @@ export function HomePage() {
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading…</p>
       ) : visibleItems.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] bg-white/50 px-5 py-10">
-          <p className="text-sm font-medium text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] bg-white/50 px-5 py-10">
+          <p className="text-sm font-medium text-[var(--avenoryn-ink-soft)]">
             Nothing needs attention in this view
           </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--lifeos-muted)]">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--avenoryn-muted)]">
             No overdue or upcoming items in the next {windowDays} days. Add
             renewals, deadlines, commitments, documents, or warranties and they
             will show up here when they need action.
@@ -78,7 +78,7 @@ export function HomePage() {
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--lifeos-muted)]">
+          <p className="text-sm text-[var(--avenoryn-muted)]">
             {visibleItems.length} item{visibleItems.length === 1 ? "" : "s"}
             {overdueCount > 0
               ? ` · ${overdueCount} overdue`
@@ -89,7 +89,7 @@ export function HomePage() {
           <ul className="space-y-3">
             {visibleItems.map((item) => (
               <li key={item.id}>
-                <div className="rounded-xl border border-[var(--lifeos-border)] bg-white/70 px-4 py-3">
+                <div className="rounded-xl border border-[var(--avenoryn-border)] bg-white/70 px-4 py-3">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
@@ -101,19 +101,19 @@ export function HomePage() {
                         >
                           {formatUrgencyLabel(item.urgency)}
                         </span>
-                        <span className="text-xs font-medium uppercase tracking-wide text-[var(--lifeos-muted)]">
+                        <span className="text-xs font-medium uppercase tracking-wide text-[var(--avenoryn-muted)]">
                           {formatSourceLabel(item.sourceType)}
                         </span>
                       </div>
-                      <p className="font-medium text-[var(--lifeos-ink)]">
+                      <p className="font-medium text-[var(--avenoryn-ink)]">
                         {item.title}
                       </p>
                       {item.detail ? (
-                        <p className="text-sm text-[var(--lifeos-muted)]">
+                        <p className="text-sm text-[var(--avenoryn-muted)]">
                           {item.detail}
                         </p>
                       ) : null}
-                      <p className="text-sm text-[var(--lifeos-ink-soft)]">
+                      <p className="text-sm text-[var(--avenoryn-ink-soft)]">
                         Due {item.dueOn}
                       </p>
                     </div>
@@ -121,7 +121,7 @@ export function HomePage() {
                     <div className="flex shrink-0 flex-wrap gap-2">
                       <Link
                         to={item.href}
-                        className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--lifeos-accent)] transition hover:bg-[var(--lifeos-accent-soft)]"
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--avenoryn-accent)] transition hover:bg-[var(--avenoryn-accent-soft)]"
                       >
                         Open
                       </Link>
@@ -130,7 +130,7 @@ export function HomePage() {
                           href={item.actionUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--lifeos-ink-soft)] transition hover:bg-white/80"
+                          className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--avenoryn-ink-soft)] transition hover:bg-white/80"
                         >
                           Action link
                         </a>

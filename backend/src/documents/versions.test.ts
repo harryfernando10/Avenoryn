@@ -60,7 +60,7 @@ async function api(
 }
 
 function makePdfBuffer(extraBytes = 0): Buffer {
-  const header = Buffer.from("%PDF-1.4\n% LifeOS version test\n");
+  const header = Buffer.from("%PDF-1.4\n% Avenoryn version test\n");
   if (extraBytes <= 0) {
     return header;
   }
@@ -95,7 +95,7 @@ describe("Phase 6 document versioning", () => {
     previousMaxUpload = process.env.MAX_UPLOAD_BYTES;
     process.env.MAX_UPLOAD_BYTES = String(64 * 1024);
 
-    storageRoot = await fs.mkdtemp(path.join(os.tmpdir(), "lifeos-versions-"));
+    storageRoot = await fs.mkdtemp(path.join(os.tmpdir(), "avenoryn-versions-"));
     setFileStorageServiceForTests(new FileStorageService(storageRoot));
 
     const app = createApp();

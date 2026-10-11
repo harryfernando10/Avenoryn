@@ -1,4 +1,4 @@
-# LifeOS — Software Design Document (SDD)
+# Avenoryn — Software Design Document (SDD)
 
 **Document type:** System design direction  
 **Status:** Canonical architecture baseline  
@@ -33,6 +33,8 @@ The AI service, when introduced, is optional. The core application must continue
 
 The AI service must **not** access the database. It returns structured suggestions to the backend. The backend validates suggestions before storage. Users Confirm / Edit / Reject AI output (`SRS.md`).
 
+Text extraction is independent of the optional external provider. The FastAPI service returns extracted text with an explicit absent-suggestion state when the provider is disabled or errors; the frontend must not label successful extraction as a total processing failure. The backend still validates the response, and the service token is shared through local environment configuration.
+
 ---
 
 ## 2. Technology stack
@@ -57,7 +59,7 @@ Package manager, exact Node/Python versions, and specific supporting libraries (
 Intended direction (exact folder names may be refined in Phase 0, but the separation of concerns is required):
 
 ```
-LifeOS/
+Avenoryn/
   SRS.md
   SDD.md
   DEVELOPMENT_PLAN.md
@@ -352,7 +354,7 @@ Life Timeline is a chronological view aggregating:
 - warranties
 - document expirations
 
-**Design direction:** a backend service produces a time-ordered event list from owned entities. Recurring items may appear as computed occurrences within a queried window; recurrence expansion rules are not finalized and will be defined in the Timeline / financial phases without turning LifeOS into a calendar replacement.
+**Design direction:** a backend service produces a time-ordered event list from owned entities. Recurring items may appear as computed occurrences within a queried window; recurrence expansion rules are not finalized and will be defined in the Timeline / financial phases without turning Avenoryn into a calendar replacement.
 
 ---
 

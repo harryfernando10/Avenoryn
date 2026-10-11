@@ -1,4 +1,5 @@
 import os
+import shutil
 import unittest
 from io import BytesIO
 from urllib.error import URLError
@@ -55,6 +56,44 @@ class OCRTests(unittest.TestCase):
             scanned_text, scanned_source = main.extract_text(scanned.tobytes(), "application/pdf")
         self.assertEqual((scanned_text, scanned_source), ("scan words", "ocr"))
 
+    @unittest.skipUnless(os.environ.get("TESSERACT_CMD") or shutil.which("tesseract"), "real Tesseract executable is unavailable")
+    def test_real_tesseract_extracts_synthetic_image_and_scanned_pdf(self):
+        import fitz
+        from PIL import Image, ImageDraw, ImageFont
+        import pytesseract
+
+        if os.environ.get("TESSERACT_CMD"):
+            pytesseract.pytesseract.tesseract_cmd = os.environ["TESSERACT_CMD"]
+        image = Image.new("RGB", (1800, 360), "white")
+        draw = ImageDraw.Draw(image)
+        font = ImageFont.truetype("C:/Windows/Fonts/arial.ttf", 112)
+        marker = "AVENORYN SCAN 58317"
+        draw.text((60, 90), marker, fill="black", font=font)
+        encoded = BytesIO()
+        image.save(encoded, format="PNG")
+
+        with patch.dict(os.environ, {"AI_PROVIDER": "none", "AI_API_KEY": "", "AI_MODEL": ""}):
+            image_result = main.process_document(encoded.getvalue(), "image/png")
+            self.assertIn("58317", image_result.extractedText)
+            self.assertEqual(image_result.textSource, "ocr")
+            self.assertIsNone(image_result.suggestion)
+            self.assertFalse(image_result.externalProviderUsed)
+
+            pdf = fitz.open()
+            page = pdf.new_page(width=900, height=180)
+            page.insert_image(page.rect, stream=encoded.getvalue())
+            pdf_result = main.process_document(pdf.tobytes(), "application/pdf")
+            self.assertIn("58317", pdf_result.extractedText)
+            self.assertEqual(pdf_result.textSource, "ocr")
+            self.assertIsNone(pdf_result.suggestion)
+
+            blank = Image.new("RGB", (900, 300), "white")
+            blank_bytes = BytesIO()
+            blank.save(blank_bytes, format="PNG")
+            with self.assertRaises(main.ServiceError) as error:
+                main.process_document(blank_bytes.getvalue(), "image/png")
+            self.assertEqual(error.exception.code, "NO_EXTRACTABLE_TEXT")
+
     def test_ocr_failure_is_reported(self):
         from PIL import Image
         import pytesseract
@@ -86,11 +125,14 @@ class ContractAndProviderTests(unittest.TestCase):
         with self.assertRaises(Exception):
             main.Suggestion.model_validate({"kind": "receipt", "amount": "abc", "extra": "untrusted"})
 
-    def test_no_provider_is_explicitly_unavailable(self):
+    def test_no_provider_keeps_local_extraction_available_without_suggestions(self):
         with patch.dict(os.environ, {"AI_PROVIDER": "none", "AI_API_KEY": "", "AI_MODEL": ""}):
-            with self.assertRaises(main.ServiceError) as error:
-                main._provider_suggestion("text")
-        self.assertEqual(error.exception.code, "AI_UNAVAILABLE")
+            with patch.object(main, "extract_text", return_value=("synthetic local text", "pdf-text")):
+                result = main.process_document(b"pdf", "application/pdf")
+        self.assertEqual(result.extractedText, "synthetic local text")
+        self.assertIsNone(result.suggestion)
+        self.assertFalse(result.externalProviderUsed)
+        self.assertIn("AI_PROVIDER", result.suggestionError)
 
     def test_provider_connection_failure_is_reported(self):
         with patch.dict(os.environ, {"AI_PROVIDER": "openai_compatible", "AI_API_KEY": "test-only", "AI_MODEL": "mock-model"}):
@@ -105,6 +147,14 @@ class ContractAndProviderTests(unittest.TestCase):
             self.assertEqual(client.post("/v1/process", content=b"%PDF-test", headers={"Content-Type": "application/pdf"}).status_code, 401)
             response = client.post("/v1/process", content=b"%PDF-test", headers={"Content-Type": "application/pdf", "Authorization": "Bearer local-test-token"})
         self.assertEqual(response.status_code, 422)
+
+    def test_readiness_requires_service_token_configuration(self):
+        client = TestClient(main.app)
+        with patch.dict(os.environ, {"AI_SERVICE_TOKEN": ""}):
+            self.assertEqual(client.get("/health").status_code, 200)
+            self.assertEqual(client.get("/ready").status_code, 503)
+        with patch.dict(os.environ, {"AI_SERVICE_TOKEN": "local-test-token"}):
+            self.assertEqual(client.get("/ready").status_code, 200)
 
 
 if __name__ == "__main__":

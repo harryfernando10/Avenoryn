@@ -2,19 +2,19 @@ import { checkDatabaseReadiness } from "./databaseService.js";
 
 export type HealthStatus = {
   status: "ok";
-  service: "lifeos-backend";
+  service: "avenoryn-backend";
 };
 
 export type ReadinessStatus = {
   status: "ready" | "not_ready";
-  service: "lifeos-backend";
+  service: "avenoryn-backend";
   database: "up" | "down" | "unconfigured";
 };
 
 export function getHealthStatus(): HealthStatus {
   return {
     status: "ok",
-    service: "lifeos-backend",
+    service: "avenoryn-backend",
   };
 }
 
@@ -24,7 +24,7 @@ export async function getReadinessStatus(): Promise<ReadinessStatus> {
   if (!db.configured) {
     return {
       status: "not_ready",
-      service: "lifeos-backend",
+      service: "avenoryn-backend",
       database: "unconfigured",
     };
   }
@@ -32,14 +32,14 @@ export async function getReadinessStatus(): Promise<ReadinessStatus> {
   if (!db.connected) {
     return {
       status: "not_ready",
-      service: "lifeos-backend",
+      service: "avenoryn-backend",
       database: "down",
     };
   }
 
   return {
     status: "ready",
-    service: "lifeos-backend",
+    service: "avenoryn-backend",
     database: "up",
   };
 }

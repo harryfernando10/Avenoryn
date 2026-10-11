@@ -25,7 +25,7 @@ const commands: Command[] = [
   { label: "Go to Life Inbox", keywords: "inbox", href: "/app/inbox" },
   { label: "Add inbox item", keywords: "add inbox item capture", href: "/app/inbox?action=add" },
   { label: "Open Inbox to process an item with AI", keywords: "process inbox item ai", href: "/app/inbox" },
-  { label: "Search LifeOS", keywords: "search documents commitments inbox", href: "/app/search" },
+  { label: "Search Avenoryn", keywords: "search documents commitments inbox", href: "/app/search" },
 ];
 
 export function CommandCenter({ onClose }: { onClose: () => void }) {
@@ -37,7 +37,7 @@ export function CommandCenter({ onClose }: { onClose: () => void }) {
   const [matches, setMatches] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const filtered = useMemo(() => commands.filter(c => `${c.label} ${c.keywords}`.toLowerCase().includes(query.trim().toLowerCase())), [query]);
-  const options = query.trim().length >= 2 ? [...filtered, { label: `Search LifeOS for “${query.trim()}”`, href: `/app/search?q=${encodeURIComponent(query.trim())}` }, ...matches.map((m) => ({ label: `${m.title} · ${m.type.replaceAll("_", " ")}`, href: m.href }))] : filtered;
+  const options = query.trim().length >= 2 ? [...filtered, { label: `Search Avenoryn for “${query.trim()}”`, href: `/app/search?q=${encodeURIComponent(query.trim())}` }, ...matches.map((m) => ({ label: `${m.title} · ${m.type.replaceAll("_", " ")}`, href: m.href }))] : filtered;
   useEffect(() => { input.current?.focus(); }, []);
   useEffect(() => {
     if (query.trim().length < 2) { setMatches([]); setLoading(false); return; }
@@ -48,7 +48,7 @@ export function CommandCenter({ onClose }: { onClose: () => void }) {
   useEffect(() => setSelected(0), [query, options.length]);
   function activate(index: number) { const item = options[index]; if (item) { onClose(); navigate(item.href); } }
   return <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/40 px-4 pt-[12vh]" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
-    <section ref={dialog} role="dialog" aria-modal="true" aria-label="Command Center" className="w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--lifeos-border)] bg-white shadow-2xl" onKeyDown={event => {
+    <section ref={dialog} role="dialog" aria-modal="true" aria-label="Command Center" className="w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--avenoryn-border)] bg-white shadow-2xl" onKeyDown={event => {
       if (event.key !== "Tab") return;
       const focusable = dialog.current?.querySelectorAll<HTMLElement>('input, button:not([disabled])');
       if (!focusable?.length) return;
@@ -56,13 +56,13 @@ export function CommandCenter({ onClose }: { onClose: () => void }) {
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }}>
-      <input ref={input} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => { if (e.key === "Escape") { e.preventDefault(); onClose(); } else if (e.key === "ArrowDown") { e.preventDefault(); setSelected(i => Math.min(i + 1, options.length - 1)); } else if (e.key === "ArrowUp") { e.preventDefault(); setSelected(i => Math.max(0, i - 1)); } else if (e.key === "Enter") { e.preventDefault(); activate(selected); } }} placeholder="Search LifeOS or run a command…" aria-label="Search commands and LifeOS" className="w-full border-0 border-b border-[var(--lifeos-border)] px-5 py-4 text-base outline-none" />
+      <input ref={input} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => { if (e.key === "Escape") { e.preventDefault(); onClose(); } else if (e.key === "ArrowDown") { e.preventDefault(); setSelected(i => Math.min(i + 1, options.length - 1)); } else if (e.key === "ArrowUp") { e.preventDefault(); setSelected(i => Math.max(0, i - 1)); } else if (e.key === "Enter") { e.preventDefault(); activate(selected); } }} placeholder="Search Avenoryn or run a command…" aria-label="Search commands and Avenoryn" className="w-full border-0 border-b border-[var(--avenoryn-border)] px-5 py-4 text-base outline-none" />
       <ul className="max-h-[min(60vh,28rem)] overflow-y-auto p-2" role="listbox" aria-label="Commands and search results">
-        {options.map((item, i) => <li key={`${item.href}:${item.label}`}><button type="button" role="option" aria-selected={selected === i} onMouseEnter={() => setSelected(i)} onClick={() => activate(i)} className={`w-full rounded-lg px-4 py-3 text-left text-sm ${selected === i ? "bg-[var(--lifeos-accent-soft)] text-[var(--lifeos-accent)]" : "hover:bg-slate-50"}`}>{item.label}</button></li>)}
-        {loading ? <li className="px-4 py-3 text-sm text-[var(--lifeos-muted)]">Searching…</li> : null}
-        {!options.length && !loading ? <li className="px-4 py-6 text-center text-sm text-[var(--lifeos-muted)]">No commands or results. Try another search.</li> : null}
+        {options.map((item, i) => <li key={`${item.href}:${item.label}`}><button type="button" role="option" aria-selected={selected === i} onMouseEnter={() => setSelected(i)} onClick={() => activate(i)} className={`w-full rounded-lg px-4 py-3 text-left text-sm ${selected === i ? "bg-[var(--avenoryn-accent-soft)] text-[var(--avenoryn-accent)]" : "hover:bg-slate-50"}`}>{item.label}</button></li>)}
+        {loading ? <li className="px-4 py-3 text-sm text-[var(--avenoryn-muted)]">Searching…</li> : null}
+        {!options.length && !loading ? <li className="px-4 py-6 text-center text-sm text-[var(--avenoryn-muted)]">No commands or results. Try another search.</li> : null}
       </ul>
-      <footer className="border-t border-[var(--lifeos-border)] px-4 py-2 text-xs text-[var(--lifeos-muted)]">↑↓ Navigate · Enter Open · Esc Close</footer>
+      <footer className="border-t border-[var(--avenoryn-border)] px-4 py-2 text-xs text-[var(--avenoryn-muted)]">↑↓ Navigate · Enter Open · Esc Close</footer>
     </section>
   </div>;
 }

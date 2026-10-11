@@ -59,7 +59,7 @@ const providerResponse = {
 
 describe("Phase 14 AI intelligence boundary", () => {
   before(async () => {
-    tempRoot = await mkdtemp(path.join(os.tmpdir(), "lifeos-ai-test-"));
+    tempRoot = await mkdtemp(path.join(os.tmpdir(), "avenoryn-ai-test-"));
     setFileStorageServiceForTests(new FileStorageService(tempRoot));
     const app = createApp();
     await new Promise<void>(resolve => { server = app.listen(0, "127.0.0.1", resolve); });
@@ -100,7 +100,7 @@ describe("Phase 14 AI intelligence boundary", () => {
     delete process.env.AI_SERVICE_URL;
     const response = await api(`/ai/inbox/${id}/process`, { method: "POST" });
     assert.equal(response.status, 503);
-    assert.match((await response.json() as { error: string }).error, /AI processing is unavailable/);
+    assert.match((await response.json() as { error: string }).error, /AI_SERVICE_URL/);
     process.env.AI_SERVICE_URL = "https://ai-service.test";
   });
 

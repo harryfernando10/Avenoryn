@@ -24,7 +24,8 @@ export type AIProcessResponse = {
   extractedText: string;
   textSource: "pdf-text" | "ocr";
   externalProviderUsed: boolean;
-  suggestion: AISuggestion;
+  suggestion: AISuggestion | null;
+  suggestionError: string | null;
 };
 
 const suggestionKeys = new Set([
@@ -32,7 +33,7 @@ const suggestionKeys = new Set([
   "name", "purchasedOn", "amount", "currency", "vendor", "notes",
   "warrantyProvider", "warrantyStartsOn", "warrantyEndsOn", "warrantyTerms",
 ]);
-const resultKeys = new Set(["extractedText", "textSource", "externalProviderUsed", "suggestion"]);
+const resultKeys = new Set(["extractedText", "textSource", "externalProviderUsed", "suggestion", "suggestionError"]);
 const dates = ["issuedOn", "expiresOn", "purchasedOn", "warrantyStartsOn", "warrantyEndsOn"] as const;
 const strings = ["title", "description", "name", "vendor", "notes", "warrantyProvider", "warrantyTerms"] as const;
 
@@ -62,7 +63,16 @@ export function parseAIProcessResponse(value: unknown): AIProcessResponse {
   if (Object.keys(result).some((key) => !resultKeys.has(key)) || typeof result.extractedText !== "string" || result.extractedText.length > 100_000 || !["pdf-text", "ocr"].includes(String(result.textSource)) || typeof result.externalProviderUsed !== "boolean") {
     throw new AppError(502, "AI service returned an invalid result.", "AI_INVALID_RESPONSE");
   }
-  const raw = record(result.suggestion);
+  const raw = result.suggestion === null ? null : record(result.suggestion);
+  const suggestionError = optionalString(result.suggestionError, "suggestionError", 500);
+  if ((raw === null) !== (suggestionError !== null)) throw new AppError(502, "AI service returned an invalid result.", "AI_INVALID_RESPONSE");
+  if (raw === null) return {
+    extractedText: result.extractedText,
+    textSource: result.textSource as AIProcessResponse["textSource"],
+    externalProviderUsed: result.externalProviderUsed,
+    suggestion: null,
+    suggestionError,
+  };
   if (Object.keys(raw).some((key) => !suggestionKeys.has(key)) || !["document", "receipt"].includes(String(raw.kind))) {
     throw new AppError(502, "AI service returned an invalid suggestion.", "AI_INVALID_RESPONSE");
   }
@@ -79,6 +89,7 @@ export function parseAIProcessResponse(value: unknown): AIProcessResponse {
     extractedText: result.extractedText,
     textSource: result.textSource as AIProcessResponse["textSource"],
     externalProviderUsed: result.externalProviderUsed,
+    suggestionError: null,
     suggestion: {
       kind: raw.kind as AISuggestion["kind"], category,
       title: values.title ?? null, issuedOn: values.issuedOn ?? null, expiresOn: values.expiresOn ?? null,

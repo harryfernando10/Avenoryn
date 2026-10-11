@@ -55,13 +55,13 @@ export function FinancialPage() {
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading…</p>
       ) : allEmpty ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] bg-white/50 px-5 py-10">
-          <p className="text-sm font-medium text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] bg-white/50 px-5 py-10">
+          <p className="text-sm font-medium text-[var(--avenoryn-ink-soft)]">
             No expected recurring amounts
           </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--lifeos-muted)]">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--avenoryn-muted)]">
             Add active subscriptions or recurring payments with a next billing
             or due date and an amount. Totals are derived from those records —
             purchases are not treated as recurring expenses.
@@ -69,7 +69,7 @@ export function FinancialPage() {
           <p className="mt-4">
             <Link
               to="/app/commitments"
-              className="text-sm font-medium text-[var(--lifeos-accent)] hover:underline"
+              className="text-sm font-medium text-[var(--avenoryn-accent)] hover:underline"
             >
               Open Commitments
             </Link>
@@ -88,14 +88,14 @@ export function FinancialPage() {
                   className={[
                     "rounded-lg px-3 py-2 text-left text-sm transition",
                     selected
-                      ? "bg-[var(--lifeos-accent-soft)] text-[var(--lifeos-accent)]"
-                      : "bg-white/70 text-[var(--lifeos-ink-soft)] hover:bg-white",
+                      ? "bg-[var(--avenoryn-accent-soft)] text-[var(--avenoryn-accent)]"
+                      : "bg-white/70 text-[var(--avenoryn-ink-soft)] hover:bg-white",
                   ].join(" ")}
                 >
                   <span className="block font-medium">
                     Next {window.days} days
                   </span>
-                  <span className="mt-0.5 block text-xs text-[var(--lifeos-muted)]">
+                  <span className="mt-0.5 block text-xs text-[var(--avenoryn-muted)]">
                     {formatWindowTotals(window.totalsByCurrency)}
                   </span>
                 </button>
@@ -105,26 +105,26 @@ export function FinancialPage() {
 
           {activeWindow ? (
             <div className="space-y-4">
-              <div className="rounded-xl border border-[var(--lifeos-border)] bg-white/70 px-4 py-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-[var(--lifeos-muted)]">
+              <div className="rounded-xl border border-[var(--avenoryn-border)] bg-white/70 px-4 py-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-[var(--avenoryn-muted)]">
                   Next {activeWindow.days} days
                 </p>
-                <p className="mt-1 text-lg font-medium text-[var(--lifeos-ink)]">
+                <p className="mt-1 text-lg font-medium text-[var(--avenoryn-ink)]">
                   {formatWindowTotals(activeWindow.totalsByCurrency)}
                 </p>
-                <p className="mt-1 text-sm text-[var(--lifeos-muted)]">
+                <p className="mt-1 text-sm text-[var(--avenoryn-muted)]">
                   {activeWindow.rangeStart} → {activeWindow.rangeEnd} ·{" "}
                   {activeWindow.items.length} occurrence
                   {activeWindow.items.length === 1 ? "" : "s"}
                 </p>
-                <p className="mt-2 text-xs leading-relaxed text-[var(--lifeos-muted)]">
+                <p className="mt-2 text-xs leading-relaxed text-[var(--avenoryn-muted)]">
                   Amounts are summed per currency with no conversion. Null
                   amounts are listed but not totaled.
                 </p>
               </div>
 
               {activeWindow.items.length === 0 ? (
-                <p className="text-sm text-[var(--lifeos-muted)]">
+                <p className="text-sm text-[var(--avenoryn-muted)]">
                   Nothing due in this window.
                 </p>
               ) : (
@@ -132,38 +132,38 @@ export function FinancialPage() {
                   {activeWindow.items.map((item) => (
                     <li
                       key={item.id}
-                      className="rounded-xl border border-[var(--lifeos-border)] bg-white/70 px-4 py-3"
+                      className="rounded-xl border border-[var(--avenoryn-border)] bg-white/70 px-4 py-3"
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="min-w-0 space-y-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-xs font-medium uppercase tracking-wide text-[var(--lifeos-muted)]">
+                            <span className="text-xs font-medium uppercase tracking-wide text-[var(--avenoryn-muted)]">
                               {formatSourceTypeLabel(item.sourceType)}
                             </span>
-                            <span className="text-xs text-[var(--lifeos-muted)]">
+                            <span className="text-xs text-[var(--avenoryn-muted)]">
                               {item.billingInterval.toLowerCase()}
                             </span>
                           </div>
-                          <p className="font-medium text-[var(--lifeos-ink)]">
+                          <p className="font-medium text-[var(--avenoryn-ink)]">
                             {item.title}
                           </p>
                           {item.detail ? (
-                            <p className="text-sm text-[var(--lifeos-muted)]">
+                            <p className="text-sm text-[var(--avenoryn-muted)]">
                               {item.detail}
                             </p>
                           ) : null}
-                          <p className="text-sm text-[var(--lifeos-ink-soft)]">
+                          <p className="text-sm text-[var(--avenoryn-ink-soft)]">
                             Due {item.dueOn}
                           </p>
                         </div>
                         <div className="shrink-0 text-right">
-                          <p className="font-medium text-[var(--lifeos-ink)]">
+                          <p className="font-medium text-[var(--avenoryn-ink)]">
                             {formatMoneyAmount(item.amount, item.currency)}
                           </p>
                           <div className="mt-2 flex flex-wrap justify-end gap-2">
                             <Link
                               to={item.href}
-                              className="text-sm font-medium text-[var(--lifeos-accent)] hover:underline"
+                              className="text-sm font-medium text-[var(--avenoryn-accent)] hover:underline"
                             >
                               Open
                             </Link>
@@ -172,7 +172,7 @@ export function FinancialPage() {
                                 href={item.actionUrl}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-sm font-medium text-[var(--lifeos-ink-soft)] hover:underline"
+                                className="text-sm font-medium text-[var(--avenoryn-ink-soft)] hover:underline"
                               >
                                 Action link
                               </a>

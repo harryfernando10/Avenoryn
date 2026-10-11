@@ -17,7 +17,7 @@ export function RegisterPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center px-4">
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading…</p>
       </div>
     );
   }
@@ -59,22 +59,22 @@ export function RegisterPage() {
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-10">
       <div className="mb-10">
         <p
-          className="text-3xl font-bold tracking-tight text-[var(--lifeos-ink)]"
+          className="text-3xl font-bold tracking-tight text-[var(--avenoryn-ink)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          LifeOS
+          Avenoryn
         </p>
-        <h1 className="mt-6 text-2xl font-semibold tracking-tight text-[var(--lifeos-ink)]">
+        <h1 className="mt-6 text-2xl font-semibold tracking-tight text-[var(--avenoryn-ink)]">
           Create account
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-[var(--lifeos-muted)]">
+        <p className="mt-2 text-sm leading-relaxed text-[var(--avenoryn-muted)]">
           Set up your private space for documents, commitments, and deadlines.
         </p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-6 shadow-sm backdrop-blur"
+        className="flex flex-col gap-4 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-6 shadow-sm backdrop-blur"
       >
         <Input
           name="email"
@@ -119,11 +119,11 @@ export function RegisterPage() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-[var(--lifeos-muted)]">
+      <p className="mt-6 text-center text-sm text-[var(--avenoryn-muted)]">
         Already have an account?{" "}
         <Link
           to="/login"
-          className="font-semibold text-[var(--lifeos-accent)] hover:underline"
+          className="font-semibold text-[var(--avenoryn-accent)] hover:underline"
         >
           Sign in
         </Link>

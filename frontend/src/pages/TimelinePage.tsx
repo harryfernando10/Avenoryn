@@ -12,13 +12,13 @@ import { PageHeader } from "../components/ui/PageHeader";
 function temporalClassName(temporal: TimelineItem["temporal"]): string {
   switch (temporal) {
     case "past":
-      return "text-[var(--lifeos-muted)] bg-white/80";
+      return "text-[var(--avenoryn-muted)] bg-white/80";
     case "today":
-      return "text-[var(--lifeos-accent)] bg-[var(--lifeos-accent-soft)]";
+      return "text-[var(--avenoryn-accent)] bg-[var(--avenoryn-accent-soft)]";
     case "upcoming":
-      return "text-[var(--lifeos-ink-soft)] bg-[var(--lifeos-accent-soft)]/60";
+      return "text-[var(--avenoryn-ink-soft)] bg-[var(--avenoryn-accent-soft)]/60";
     default:
-      return "text-[var(--lifeos-muted)] bg-white/80";
+      return "text-[var(--avenoryn-muted)] bg-white/80";
   }
 }
 
@@ -66,13 +66,13 @@ export function TimelinePage() {
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading…</p>
       ) : items.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] bg-white/50 px-5 py-10">
-          <p className="text-sm font-medium text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] bg-white/50 px-5 py-10">
+          <p className="text-sm font-medium text-[var(--avenoryn-ink-soft)]">
             Timeline is quiet
           </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--lifeos-muted)]">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--avenoryn-muted)]">
             No dated events in the past {pastDays} days or next {futureDays}{" "}
             days. Add renewals, deadlines, commitments, documents, or warranties
             and they will line up here by date. This is not a calendar
@@ -81,19 +81,19 @@ export function TimelinePage() {
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--lifeos-muted)]">
+          <p className="text-sm text-[var(--avenoryn-muted)]">
             {items.length} event{items.length === 1 ? "" : "s"} · past{" "}
             {pastDays} days to next {futureDays} days
           </p>
 
-          <ol className="relative space-y-0 border-l border-[var(--lifeos-border)] pl-6">
+          <ol className="relative space-y-0 border-l border-[var(--avenoryn-border)] pl-6">
             {items.map((item) => (
               <li key={item.id} className="relative pb-6 last:pb-0">
                 <span
                   aria-hidden
-                  className="absolute -left-[1.625rem] top-3 h-2.5 w-2.5 rounded-full border-2 border-[var(--lifeos-accent)] bg-[var(--lifeos-surface)]"
+                  className="absolute -left-[1.625rem] top-3 h-2.5 w-2.5 rounded-full border-2 border-[var(--avenoryn-accent)] bg-[var(--avenoryn-surface)]"
                 />
-                <div className="rounded-xl border border-[var(--lifeos-border)] bg-white/70 px-4 py-3">
+                <div className="rounded-xl border border-[var(--avenoryn-border)] bg-white/70 px-4 py-3">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
@@ -105,24 +105,24 @@ export function TimelinePage() {
                         >
                           {formatTemporalLabel(item.temporal)}
                         </span>
-                        <span className="text-xs font-medium uppercase tracking-wide text-[var(--lifeos-muted)]">
+                        <span className="text-xs font-medium uppercase tracking-wide text-[var(--avenoryn-muted)]">
                           {formatTimelineTypeLabel(item.type)}
                         </span>
                         {item.status ? (
-                          <span className="text-xs text-[var(--lifeos-muted)]">
+                          <span className="text-xs text-[var(--avenoryn-muted)]">
                             {item.status.replaceAll("_", " ").toLowerCase()}
                           </span>
                         ) : null}
                       </div>
-                      <p className="font-medium text-[var(--lifeos-ink)]">
+                      <p className="font-medium text-[var(--avenoryn-ink)]">
                         {item.title}
                       </p>
                       {item.detail ? (
-                        <p className="text-sm text-[var(--lifeos-muted)]">
+                        <p className="text-sm text-[var(--avenoryn-muted)]">
                           {item.detail}
                         </p>
                       ) : null}
-                      <p className="text-sm text-[var(--lifeos-ink-soft)]">
+                      <p className="text-sm text-[var(--avenoryn-ink-soft)]">
                         {item.date}
                       </p>
                     </div>
@@ -130,7 +130,7 @@ export function TimelinePage() {
                     <div className="flex shrink-0 flex-wrap gap-2">
                       <Link
                         to={item.href}
-                        className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--lifeos-accent)] transition hover:bg-[var(--lifeos-accent-soft)]"
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--avenoryn-accent)] transition hover:bg-[var(--avenoryn-accent-soft)]"
                       >
                         Open
                       </Link>
@@ -139,7 +139,7 @@ export function TimelinePage() {
                           href={item.actionUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--lifeos-ink-soft)] transition hover:bg-white/80"
+                          className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--avenoryn-ink-soft)] transition hover:bg-white/80"
                         >
                           Action link
                         </a>

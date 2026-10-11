@@ -1,10 +1,10 @@
-# LifeOS Development Plan
+# Avenoryn Development Plan
 
 **Plan status:** Consolidated final roadmap
-**Last updated:** 2026-10-04
+**Last updated:** 2026-10-11
 **Final planned phase:** Phase 16 — Production Hardening + Release
 
-LifeOS is an individual life-administration system for private documents, commitments, purchases, renewals, deadlines, and the actions around them. This plan records the completed project in its final planned scope. It does not define additional product phases.
+Avenoryn is an individual life-administration system for private documents, commitments, purchases, renewals, deadlines, and the actions around them. This plan records the completed project in its final planned scope. It does not define additional product phases.
 
 ## Phase status
 
@@ -14,7 +14,7 @@ LifeOS is an individual life-administration system for private documents, commit
 | 1 | Design System + Application Shell | Complete |
 | 2 | Database + Backend Foundation | Complete |
 | 3 | Authentication + Authorization | Complete |
-| 4 | Core LifeOS Data Model | Complete |
+| 4 | Core Avenoryn Data Model | Complete |
 | 5 | Vault + Documents | Complete |
 | 6 | Document Versioning | Complete |
 | 7 | Commitments | Complete |
@@ -29,6 +29,8 @@ LifeOS is an individual life-administration system for private documents, commit
 | 16 | Production Hardening + Release | Final planned phase |
 
 Phase 16 is complete only after required checks and security review pass, final documentation and tracked-file audits are complete, a final commit is created, and the intended `master` branch is successfully published and verified. The actual release state belongs in `Context.md`.
+
+The final quality pass is tracked as release hardening within Phase 16. Avenoryn is the selected product identity; the public-web name screen is documented in `docs/NAME_AVAILABILITY.md`. The AI service response contract allows local text extraction to succeed when optional structured suggestions are unavailable.
 
 ## Completed scope
 

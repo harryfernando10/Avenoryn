@@ -57,28 +57,28 @@ export function AppShell() {
     <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-4 sm:px-6 lg:px-8">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[var(--lifeos-surface)] focus:px-3 focus:py-2 focus:shadow"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[var(--avenoryn-surface)] focus:px-3 focus:py-2 focus:shadow"
       >
         Skip to content
       </a>
 
-      <header className="flex flex-col gap-4 border-b border-[var(--lifeos-border)] pb-4 sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-4 border-b border-[var(--avenoryn-border)] pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <p
-            className="text-2xl font-bold tracking-tight text-[var(--lifeos-ink)]"
+            className="text-2xl font-bold tracking-tight text-[var(--avenoryn-ink)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            LifeOS
+            Avenoryn
           </p>
-          <span className="hidden text-sm text-[var(--lifeos-muted)] sm:inline">
+          <span className="hidden text-sm text-[var(--avenoryn-muted)] sm:inline">
             What needs attention
           </span>
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="secondary" className="shrink-0 px-3 py-2" onClick={openCommandCenter} aria-label="Open Command Center">⌕ <span className="hidden sm:inline">Search / Commands</span><span className="ml-2 hidden text-xs text-[var(--lifeos-muted)] sm:inline">Ctrl K</span></Button>
+          <Button variant="secondary" className="shrink-0 px-3 py-2" onClick={openCommandCenter} aria-label="Open Command Center">⌕ <span className="hidden sm:inline">Search / Commands</span><span className="ml-2 hidden text-xs text-[var(--avenoryn-muted)] sm:inline">Ctrl K</span></Button>
           <NotificationsButton />
-          <p className="truncate text-sm text-[var(--lifeos-muted)]">
+          <p className="truncate text-sm text-[var(--avenoryn-muted)]">
             {user?.email}
           </p>
           <Button
@@ -104,8 +104,8 @@ export function AppShell() {
                     [
                       "block whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition",
                       isActive
-                        ? "bg-[var(--lifeos-accent-soft)] text-[var(--lifeos-accent)]"
-                        : "text-[var(--lifeos-ink-soft)] hover:bg-white/70 hover:text-[var(--lifeos-ink)]",
+                        ? "bg-[var(--avenoryn-accent-soft)] text-[var(--avenoryn-accent)]"
+                        : "text-[var(--avenoryn-ink-soft)] hover:bg-white/70 hover:text-[var(--avenoryn-ink)]",
                     ].join(" ")
                   }
                 >

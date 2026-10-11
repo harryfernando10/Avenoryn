@@ -12,7 +12,9 @@ type PrivateFile = { storageKey: string; mimeType: string };
 async function requestSuggestions(file: PrivateFile) {
   const baseUrl = getAiServiceUrl();
   const token = getAiServiceToken();
-  if (!baseUrl || !token) throw new AppError(503, "AI processing is unavailable. Configure AI_SERVICE_URL and AI_SERVICE_TOKEN for the optional AI service.", "AI_UNAVAILABLE");
+  if (!baseUrl && !token) throw new AppError(503, "Local document extraction is disabled. Set AI_SERVICE_URL and the shared AI_SERVICE_TOKEN in backend/.env, then start the optional service.", "AI_UNAVAILABLE");
+  if (!baseUrl) throw new AppError(503, "Local document extraction is disabled because AI_SERVICE_URL is missing from backend/.env.", "AI_CONFIGURATION_INVALID");
+  if (!token) throw new AppError(503, "Local document extraction is disabled because AI_SERVICE_TOKEN is missing from backend/.env.", "AI_CONFIGURATION_INVALID");
   let serviceAddress: URL;
   try { serviceAddress = new URL(baseUrl); }
   catch { throw new AppError(503, "AI processing is unavailable because AI_SERVICE_URL is invalid.", "AI_UNAVAILABLE"); }
@@ -29,12 +31,15 @@ async function requestSuggestions(file: PrivateFile) {
       signal: AbortSignal.timeout(60_000),
     });
   } catch {
-    throw new AppError(503, "AI processing service is unavailable. Your file was not changed.", "AI_UNAVAILABLE");
+    throw new AppError(503, "Could not reach the local extraction service at AI_SERVICE_URL. Verify it is running on 127.0.0.1:8000 and that the backend URL is correct. Your file was not changed.", "AI_SERVICE_UNREACHABLE");
   }
   let body: unknown;
   try { body = await response.json(); } catch { throw new AppError(502, "AI processing service returned an invalid response.", "AI_INVALID_RESPONSE"); }
   if (!response.ok) {
     const detail = body && typeof body === "object" ? (body as { detail?: { code?: string; error?: string } }).detail : undefined;
+    if (response.status === 401 || detail?.code === "UNAUTHORIZED") {
+      throw new AppError(503, "The extraction service rejected its shared token. Set the same AI_SERVICE_TOKEN in backend/.env and ai-service/.env.", "AI_SERVICE_AUTH_FAILED");
+    }
     const code = detail?.code ?? (response.status === 503 ? "AI_UNAVAILABLE" : "AI_PROCESSING_FAILED");
     throw new AppError(response.status >= 500 ? 503 : response.status, detail?.error ?? "AI could not process this file.", code);
   }

@@ -5,12 +5,12 @@ export type ApiErrorBody = {
 
 export type HealthResponseBody = {
   status: "ok";
-  service: "lifeos-backend";
+  service: "avenoryn-backend";
 };
 
 export type ReadyResponseBody = {
   status: "ready" | "not_ready";
-  service: "lifeos-backend";
+  service: "avenoryn-backend";
   database: "up" | "down" | "unconfigured";
 };
 

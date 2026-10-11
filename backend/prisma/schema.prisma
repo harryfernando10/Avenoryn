@@ -1,4 +1,4 @@
-// LifeOS — Prisma schema
+// Avenoryn — Prisma schema
 // Phase 2: User foundation
 // Phase 3: password hash + sessions
 // Phase 4: core domain model (entities/relations only; CRUD/UI in later phases)

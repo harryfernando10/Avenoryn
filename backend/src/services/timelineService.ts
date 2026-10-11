@@ -8,7 +8,7 @@ import { prisma } from "../db/prisma.js";
  * Recurrence expansion (computing future occurrences from billingInterval) is
  * intentionally deferred — Timeline uses stored nextBillingOn / nextDueOn only
  * (one dated occurrence per commitment). Full expansion belongs with Phase 12
- * financial windows if still needed; LifeOS is not a calendar product.
+ * financial windows if still needed; Avenoryn is not a calendar product.
  */
 export const TIMELINE_PAST_DAYS = 365;
 export const TIMELINE_FUTURE_DAYS = 365;

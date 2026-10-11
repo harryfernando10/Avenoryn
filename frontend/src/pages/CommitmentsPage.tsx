@@ -76,7 +76,7 @@ const emptyPaymentForm: PaymentFormState = {
 };
 
 function fieldClassName(): string {
-  return "w-full rounded-lg border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)] px-3.5 py-2.5 text-[var(--lifeos-ink)] outline-none transition focus:border-[var(--lifeos-accent)] focus:ring-2 focus:ring-[var(--lifeos-accent-soft)]";
+  return "w-full rounded-lg border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)] px-3.5 py-2.5 text-[var(--avenoryn-ink)] outline-none transition focus:border-[var(--avenoryn-accent)] focus:ring-2 focus:ring-[var(--avenoryn-accent-soft)]";
 }
 
 function optionalOrNull(value: string): string | null {
@@ -354,7 +354,7 @@ export function CommitmentsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <PageHeader
           title="Commitments"
-          description="Subscriptions, recurring payments, memberships, and purchases. Action URLs open externally — LifeOS does not process payments."
+          description="Subscriptions, recurring payments, memberships, and purchases. Action URLs open externally — Avenoryn does not process payments."
         />
         {tab !== "purchases" ? (
           <Button
@@ -377,12 +377,12 @@ export function CommitmentsPage() {
       </div>
 
       {tab !== "purchases" && error ? (
-        <p className="text-sm text-[var(--lifeos-danger)]" role="alert">
+        <p className="text-sm text-[var(--avenoryn-danger)]" role="alert">
           {error}
         </p>
       ) : null}
       {tab !== "purchases" && success ? (
-        <p className="text-sm text-[var(--lifeos-accent)]" role="status">
+        <p className="text-sm text-[var(--avenoryn-accent)]" role="status">
           {success}
         </p>
       ) : null}
@@ -429,9 +429,9 @@ export function CommitmentsPage() {
         tab === "subscriptions" ? (
           <form
             onSubmit={handleSubscriptionSubmit}
-            className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5"
+            className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5"
           >
-            <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+            <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
               {editingId ? "Edit subscription" : "Add subscription"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -479,7 +479,7 @@ export function CommitmentsPage() {
                 }
               />
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                   Billing interval
                 </span>
                 <select
@@ -511,7 +511,7 @@ export function CommitmentsPage() {
                 }
               />
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                   Status
                 </span>
                 <select
@@ -541,11 +541,11 @@ export function CommitmentsPage() {
                   }))
                 }
                 placeholder="https://…"
-                hint="Opens externally; LifeOS does not complete the payment."
+                hint="Opens externally; Avenoryn does not complete the payment."
               />
             </div>
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                 Notes
               </span>
               <textarea
@@ -576,9 +576,9 @@ export function CommitmentsPage() {
         ) : (
           <form
             onSubmit={handlePaymentSubmit}
-            className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5"
+            className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5"
           >
-            <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+            <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
               {editingId ? "Edit recurring payment" : "Add recurring payment"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -626,7 +626,7 @@ export function CommitmentsPage() {
                 }
               />
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                   Billing interval
                 </span>
                 <select
@@ -658,7 +658,7 @@ export function CommitmentsPage() {
                 }
               />
               <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                   Status
                 </span>
                 <select
@@ -688,11 +688,11 @@ export function CommitmentsPage() {
                   }))
                 }
                 placeholder="https://…"
-                hint="Opens externally; LifeOS does not complete the payment."
+                hint="Opens externally; Avenoryn does not complete the payment."
               />
             </div>
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                 Notes
               </span>
               <textarea
@@ -724,13 +724,13 @@ export function CommitmentsPage() {
       ) : null}
 
       {tab !== "purchases" && loading ? (
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading commitments…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading commitments…</p>
       ) : tab !== "purchases" && isEmpty && !showForm ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] bg-white/50 px-5 py-10">
-          <p className="text-sm font-medium text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] bg-white/50 px-5 py-10">
+          <p className="text-sm font-medium text-[var(--avenoryn-ink-soft)]">
             No commitments yet
           </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--lifeos-muted)]">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--avenoryn-muted)]">
             Track subscriptions and recurring payments here. Memberships can be
             recorded as either type.
           </p>
@@ -739,9 +739,9 @@ export function CommitmentsPage() {
           </Button>
         </div>
       ) : tab === "subscriptions" ? (        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-          <ul className="divide-y divide-[var(--lifeos-border)] overflow-hidden rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90">
+          <ul className="divide-y divide-[var(--avenoryn-border)] overflow-hidden rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90">
             {subscriptions.length === 0 ? (
-              <li className="px-4 py-8 text-sm text-[var(--lifeos-muted)]">
+              <li className="px-4 py-8 text-sm text-[var(--avenoryn-muted)]">
                 No subscriptions yet.
               </li>
             ) : (
@@ -752,15 +752,15 @@ export function CommitmentsPage() {
                     className={[
                       "flex w-full flex-col gap-1 px-4 py-4 text-left transition",
                       item.id === selectedSubscriptionId
-                        ? "bg-[var(--lifeos-accent-soft)]"
+                        ? "bg-[var(--avenoryn-accent-soft)]"
                         : "hover:bg-white/80",
                     ].join(" ")}
                     onClick={() => setSelectedSubscriptionId(item.id)}
                   >
-                    <span className="text-sm font-semibold text-[var(--lifeos-ink)]">
+                    <span className="text-sm font-semibold text-[var(--avenoryn-ink)]">
                       {item.name}
                     </span>
-                    <span className="text-xs text-[var(--lifeos-muted)]">
+                    <span className="text-xs text-[var(--avenoryn-muted)]">
                       {formatStatusLabel(item.status)} ·{" "}
                       {formatBillingInterval(item.billingInterval)} ·{" "}
                       {formatMoney(item.amount, item.currency)}
@@ -770,22 +770,22 @@ export function CommitmentsPage() {
               ))
             )}
           </ul>
-          <div className="rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5">
+          <div className="rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5">
             {selectedSubscription ? (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-[var(--lifeos-ink)]">
+                <h2 className="text-xl font-semibold text-[var(--avenoryn-ink)]">
                   {selectedSubscription.name}
                 </h2>
                 <dl className="grid gap-3 text-sm">
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Provider</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Provider</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {selectedSubscription.provider ?? "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Amount</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Amount</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {formatMoney(
                         selectedSubscription.amount,
                         selectedSubscription.currency,
@@ -793,33 +793,33 @@ export function CommitmentsPage() {
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Next billing</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Next billing</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {selectedSubscription.nextBillingOn ?? "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Status</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Status</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {formatStatusLabel(selectedSubscription.status)}
                     </dd>
                   </div>
                   {selectedSubscription.notes ? (
                     <div>
-                      <dt className="text-[var(--lifeos-muted)]">Notes</dt>
-                      <dd className="text-[var(--lifeos-ink-soft)]">
+                      <dt className="text-[var(--avenoryn-muted)]">Notes</dt>
+                      <dd className="text-[var(--avenoryn-ink-soft)]">
                         {selectedSubscription.notes}
                       </dd>
                     </div>
                   ) : null}
                 </dl>
-                <div className="flex flex-wrap gap-3 border-t border-[var(--lifeos-border)] pt-4">
+                <div className="flex flex-wrap gap-3 border-t border-[var(--avenoryn-border)] pt-4">
                   {selectedSubscription.actionUrl ? (
                     <a
                       href={selectedSubscription.actionUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg bg-[var(--lifeos-accent)] px-4 py-2.5 text-sm font-semibold text-white"
+                      className="inline-flex items-center justify-center rounded-lg bg-[var(--avenoryn-accent)] px-4 py-2.5 text-sm font-semibold text-white"
                     >
                       Open action URL
                     </a>
@@ -834,7 +834,7 @@ export function CommitmentsPage() {
                   <Button
                     type="button"
                     variant="ghost"
-                    className="text-[var(--lifeos-danger)]"
+                    className="text-[var(--avenoryn-danger)]"
                     disabled={busyId === selectedSubscription.id}
                     onClick={() => {
                       void handleDeleteSubscription(selectedSubscription.id);
@@ -845,7 +845,7 @@ export function CommitmentsPage() {
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-[var(--lifeos-muted)]">
+              <p className="text-sm text-[var(--avenoryn-muted)]">
                 Select a subscription to view details.
               </p>
             )}
@@ -853,9 +853,9 @@ export function CommitmentsPage() {
         </div>
       ) : tab === "payments" ? (
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-          <ul className="divide-y divide-[var(--lifeos-border)] overflow-hidden rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90">
+          <ul className="divide-y divide-[var(--avenoryn-border)] overflow-hidden rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90">
             {payments.length === 0 ? (
-              <li className="px-4 py-8 text-sm text-[var(--lifeos-muted)]">
+              <li className="px-4 py-8 text-sm text-[var(--avenoryn-muted)]">
                 No recurring payments yet.
               </li>
             ) : (
@@ -866,15 +866,15 @@ export function CommitmentsPage() {
                     className={[
                       "flex w-full flex-col gap-1 px-4 py-4 text-left transition",
                       item.id === selectedPaymentId
-                        ? "bg-[var(--lifeos-accent-soft)]"
+                        ? "bg-[var(--avenoryn-accent-soft)]"
                         : "hover:bg-white/80",
                     ].join(" ")}
                     onClick={() => setSelectedPaymentId(item.id)}
                   >
-                    <span className="text-sm font-semibold text-[var(--lifeos-ink)]">
+                    <span className="text-sm font-semibold text-[var(--avenoryn-ink)]">
                       {item.name}
                     </span>
-                    <span className="text-xs text-[var(--lifeos-muted)]">
+                    <span className="text-xs text-[var(--avenoryn-muted)]">
                       {formatStatusLabel(item.status)} ·{" "}
                       {formatBillingInterval(item.billingInterval)} ·{" "}
                       {formatMoney(item.amount, item.currency)}
@@ -884,22 +884,22 @@ export function CommitmentsPage() {
               ))
             )}
           </ul>
-          <div className="rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5">
+          <div className="rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5">
             {selectedPayment ? (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-[var(--lifeos-ink)]">
+                <h2 className="text-xl font-semibold text-[var(--avenoryn-ink)]">
                   {selectedPayment.name}
                 </h2>
                 <dl className="grid gap-3 text-sm">
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Payee</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Payee</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {selectedPayment.payee ?? "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Amount</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Amount</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {formatMoney(
                         selectedPayment.amount,
                         selectedPayment.currency,
@@ -907,33 +907,33 @@ export function CommitmentsPage() {
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Next due</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Next due</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {selectedPayment.nextDueOn ?? "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Status</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Status</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {formatStatusLabel(selectedPayment.status)}
                     </dd>
                   </div>
                   {selectedPayment.notes ? (
                     <div>
-                      <dt className="text-[var(--lifeos-muted)]">Notes</dt>
-                      <dd className="text-[var(--lifeos-ink-soft)]">
+                      <dt className="text-[var(--avenoryn-muted)]">Notes</dt>
+                      <dd className="text-[var(--avenoryn-ink-soft)]">
                         {selectedPayment.notes}
                       </dd>
                     </div>
                   ) : null}
                 </dl>
-                <div className="flex flex-wrap gap-3 border-t border-[var(--lifeos-border)] pt-4">
+                <div className="flex flex-wrap gap-3 border-t border-[var(--avenoryn-border)] pt-4">
                   {selectedPayment.actionUrl ? (
                     <a
                       href={selectedPayment.actionUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg bg-[var(--lifeos-accent)] px-4 py-2.5 text-sm font-semibold text-white"
+                      className="inline-flex items-center justify-center rounded-lg bg-[var(--avenoryn-accent)] px-4 py-2.5 text-sm font-semibold text-white"
                     >
                       Open action URL
                     </a>
@@ -948,7 +948,7 @@ export function CommitmentsPage() {
                   <Button
                     type="button"
                     variant="ghost"
-                    className="text-[var(--lifeos-danger)]"
+                    className="text-[var(--avenoryn-danger)]"
                     disabled={busyId === selectedPayment.id}
                     onClick={() => {
                       void handleDeletePayment(selectedPayment.id);
@@ -959,7 +959,7 @@ export function CommitmentsPage() {
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-[var(--lifeos-muted)]">
+              <p className="text-sm text-[var(--avenoryn-muted)]">
                 Select a recurring payment to view details.
               </p>
             )}

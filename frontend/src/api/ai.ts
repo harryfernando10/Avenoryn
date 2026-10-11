@@ -23,7 +23,8 @@ export type AIProcessResult = {
   extractedText: string;
   textSource: "pdf-text" | "ocr";
   externalProviderUsed: boolean;
-  suggestion: AISuggestion;
+  suggestion: AISuggestion | null;
+  suggestionError: string | null;
 };
 
 export async function processInboxWithAI(id: string): Promise<AIProcessResult> {

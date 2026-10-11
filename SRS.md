@@ -1,24 +1,24 @@
-# LifeOS — Software Requirements Specification (SRS)
+# Avenoryn — Software Requirements Specification (SRS)
 
 **Document type:** Product requirements  
 **Status:** Canonical planning baseline  
 **Implementation status:** Requirements baseline; current implementation status is maintained in `Context.md`.
 
-This document is the product authority for LifeOS. Architectural decisions belong in `SDD.md`. Phase sequencing belongs in `DEVELOPMENT_PLAN.md`. Current work state belongs in `Context.md`.
+This document is the product authority for Avenoryn. Architectural decisions belong in `SDD.md`. Phase sequencing belongs in `DEVELOPMENT_PLAN.md`. Current work state belongs in `Context.md`.
 
 ---
 
 ## 1. Product vision
 
-LifeOS is a unified personal life-administration system.
+Avenoryn is a unified personal life-administration system.
 
 **Core principle:**
 
-> Calendar tells you when. LifeOS tells you what, why, where, and what to do next.
+> Calendar tells you when. Avenoryn tells you what, why, where, and what to do next.
 
 The product brings together personal administrative information that is normally scattered across files, emails, calendars, websites, and apps. It is a private system of record for documents, commitments, renewals, warranties, deadlines, and the actions they imply.
 
-LifeOS does not replace a calendar, bank, cloud drive, or chatbot. It organizes administrative life so the user can see what needs attention and how to act.
+Avenoryn does not replace a calendar, bank, cloud drive, or chatbot. It organizes administrative life so the user can see what needs attention and how to act.
 
 ---
 
@@ -137,7 +137,7 @@ Initially these are manually reviewed and categorized. Later, AI may suggest cla
 
 ### 4.10 Document intelligence (post-MVP)
 
-Optional AI/OCR can extract structured information from documents. AI output is a **suggestion**. The user must Confirm / Edit / Reject.
+Optional local OCR and text extraction can extract document text without an AI provider. Structured AI suggestions are optional; AI output is a **suggestion**. The user must Confirm / Edit / Reject. When the provider is disabled or fails, extracted text remains available and the UI must report that suggestions were not produced.
 
 Example: insurance PDF → provider, policy number, start date, expiry date.
 
@@ -153,7 +153,7 @@ Documents must support current version, previous versions, version number, uploa
 
 Records may contain external URLs for the relevant official action (renew passport, manage subscription, pay bill, renew insurance, renew domain).
 
-LifeOS must **not** pretend to perform an external action unless an actual integration exists.
+Avenoryn must **not** pretend to perform an external action unless an actual integration exists.
 
 ### 4.14 Global command center
 
@@ -324,7 +324,7 @@ The command palette is implemented in Phase 15. Search and command behavior are 
 | NFR-07 | Secrets exist only in environment variables. `.env` is never committed. `.env.example` is provided. |
 | NFR-08 | Real personal documents are never used during development. |
 | NFR-09 | Initial file storage is private and local; cloud object storage may come later. |
-| NFR-10 | Core LifeOS works without the AI service. |
+| NFR-10 | Core Avenoryn works without the AI service. |
 | NFR-11 | Input validation, rate limiting, security headers, and secure error handling are part of the security baseline. |
 | NFR-12 | Development is incremental: one phase at a time, with tests and acceptance criteria. |
 
@@ -407,7 +407,7 @@ Security is a first-class requirement.
 - Primary question on Home: “What needs my attention?”
 - Modern, minimal, professional, responsive, calm, classy, visually consistent.
 - Do not create an overcrowded enterprise dashboard.
-- Action URLs are honest: they open the official destination; LifeOS does not fake the action.
+- Action URLs are honest: they open the official destination; Avenoryn does not fake the action.
 - AI, when present, is a suggestion layer with explicit Confirm / Edit / Reject.
 - Protected application areas: Home, Vault, Commitments, Timeline, Inbox.
 - Authentication screens: Login, Register.
@@ -428,7 +428,7 @@ The product is acceptably specified when:
 5. Timeline shows those events chronologically.
 6. Financial overview shows recurring commitments for 7 / 30 / 365 days without becoming a budgeting app.
 7. Search finds records across the listed entity types.
-8. Action URLs open external destinations without pretending LifeOS completed the action.
+8. Action URLs open external destinations without pretending Avenoryn completed the action.
 9. Files are never publicly accessible; ownership is always checked.
 10. The system remains usable without AI.
 11. Scope boundaries in Section 12 are not violated.
@@ -439,7 +439,7 @@ Phase-level acceptance criteria are in `DEVELOPMENT_PLAN.md`.
 
 ## 12. Scope boundaries
 
-LifeOS is **not** initially:
+Avenoryn is **not** initially:
 
 - a banking application
 - a budgeting application

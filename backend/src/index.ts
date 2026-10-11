@@ -9,7 +9,7 @@ const app = createApp();
 const port = getPort();
 
 const server = app.listen(port, () => {
-  console.log(`LifeOS backend listening on http://localhost:${port}`);
+  console.log(`Avenoryn backend listening on http://localhost:${port}`);
 });
 
 async function shutdown(signal: string): Promise<void> {

@@ -52,7 +52,7 @@ const emptyWarrantyForm: WarrantyFormState = {
 };
 
 function fieldClassName(): string {
-  return "w-full rounded-lg border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)] px-3.5 py-2.5 text-[var(--lifeos-ink)] outline-none transition focus:border-[var(--lifeos-accent)] focus:ring-2 focus:ring-[var(--lifeos-accent-soft)]";
+  return "w-full rounded-lg border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)] px-3.5 py-2.5 text-[var(--avenoryn-ink)] outline-none transition focus:border-[var(--avenoryn-accent)] focus:ring-2 focus:ring-[var(--avenoryn-accent-soft)]";
 }
 
 function optionalOrNull(value: string): string | null {
@@ -294,7 +294,7 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-[var(--lifeos-ink-soft)]">
+        <p className="text-sm text-[var(--avenoryn-ink-soft)]">
           Record purchases, optional warranties, and link an existing Vault
           receipt. No OCR or receipt intelligence in this phase.
         </p>
@@ -313,12 +313,12 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
       </div>
 
       {error ? (
-        <p className="text-sm text-[var(--lifeos-danger)]" role="alert">
+        <p className="text-sm text-[var(--avenoryn-danger)]" role="alert">
           {error}
         </p>
       ) : null}
       {success ? (
-        <p className="text-sm text-[var(--lifeos-accent)]" role="status">
+        <p className="text-sm text-[var(--avenoryn-accent)]" role="status">
           {success}
         </p>
       ) : null}
@@ -326,9 +326,9 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
       {showForm ? (
         <form
           onSubmit={handlePurchaseSubmit}
-          className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5"
+          className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5"
         >
-          <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+          <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
             {editingId ? "Edit purchase" : "Add purchase"}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -388,7 +388,7 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
               }
             />
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                 Receipt (Vault document)
               </span>
               <select
@@ -411,7 +411,7 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
             </label>
           </div>
           <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+            <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
               Notes
             </span>
             <textarea
@@ -444,9 +444,9 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
       {showWarrantyForm && selected ? (
         <form
           onSubmit={handleWarrantySubmit}
-          className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5"
+          className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5"
         >
-          <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+          <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
             {selected.warranty ? "Edit warranty" : "Add warranty"} —{" "}
             {selected.name}
           </h2>
@@ -496,7 +496,7 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
             />
           </div>
           <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+            <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
               Notes
             </span>
             <textarea
@@ -527,13 +527,13 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--lifeos-ink-soft)]">Loading purchases…</p>
+        <p className="text-sm text-[var(--avenoryn-ink-soft)]">Loading purchases…</p>
       ) : null}
 
       {isEmpty ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] px-6 py-12 text-center">
-          <p className="text-[var(--lifeos-ink)]">No purchases yet</p>
-          <p className="mt-2 text-sm text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] px-6 py-12 text-center">
+          <p className="text-[var(--avenoryn-ink)]">No purchases yet</p>
+          <p className="mt-2 text-sm text-[var(--avenoryn-ink-soft)]">
             Add a purchase to track the product, optional warranty expiry, and a
             linked Vault receipt.
           </p>
@@ -550,21 +550,21 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
                   onClick={() => setSelectedId(item.id)}
                   className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
                     selectedId === item.id
-                      ? "border-[var(--lifeos-accent)] bg-[var(--lifeos-accent-soft)]/40"
-                      : "border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/80 hover:border-[var(--lifeos-accent)]/50"
+                      ? "border-[var(--avenoryn-accent)] bg-[var(--avenoryn-accent-soft)]/40"
+                      : "border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/80 hover:border-[var(--avenoryn-accent)]/50"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-medium text-[var(--lifeos-ink)]">
+                      <p className="font-medium text-[var(--avenoryn-ink)]">
                         {item.name}
                       </p>
-                      <p className="mt-1 text-sm text-[var(--lifeos-ink-soft)]">
+                      <p className="mt-1 text-sm text-[var(--avenoryn-ink-soft)]">
                         {item.purchasedOn}
                         {item.vendor ? ` · ${item.vendor}` : ""}
                       </p>
                     </div>
-                    <div className="text-right text-sm text-[var(--lifeos-ink-soft)]">
+                    <div className="text-right text-sm text-[var(--avenoryn-ink-soft)]">
                       <p>{formatMoney(item.amount, item.currency)}</p>
                       <p className="mt-1">{warrantyStatusLabel(item.warranty)}</p>
                     </div>
@@ -574,46 +574,46 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
             ))}
           </ul>
 
-          <aside className="rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5">
+          <aside className="rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5">
             {selected ? (
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+                  <h3 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
                     {selected.name}
                   </h3>
-                  <p className="mt-1 text-sm text-[var(--lifeos-ink-soft)]">
+                  <p className="mt-1 text-sm text-[var(--avenoryn-ink-soft)]">
                     Purchased {selected.purchasedOn}
                     {selected.vendor ? ` from ${selected.vendor}` : ""}
                   </p>
                 </div>
                 <dl className="grid gap-3 text-sm sm:grid-cols-2">
                   <div>
-                    <dt className="text-[var(--lifeos-ink-soft)]">Amount</dt>
-                    <dd className="text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-ink-soft)]">Amount</dt>
+                    <dd className="text-[var(--avenoryn-ink)]">
                       {formatMoney(selected.amount, selected.currency)}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-ink-soft)]">Receipt</dt>
-                    <dd className="text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-ink-soft)]">Receipt</dt>
+                    <dd className="text-[var(--avenoryn-ink)]">
                       {selected.receiptTitle ?? "None linked"}
                     </dd>
                   </div>
                   <div className="sm:col-span-2">
-                    <dt className="text-[var(--lifeos-ink-soft)]">Notes</dt>
-                    <dd className="text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-ink-soft)]">Notes</dt>
+                    <dd className="text-[var(--avenoryn-ink)]">
                       {selected.notes ?? "—"}
                     </dd>
                   </div>
                 </dl>
 
-                <div className="rounded-xl border border-[var(--lifeos-border)] p-4">
+                <div className="rounded-xl border border-[var(--avenoryn-border)] p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-medium text-[var(--lifeos-ink)]">
+                      <p className="font-medium text-[var(--avenoryn-ink)]">
                         Warranty
                       </p>
-                      <p className="mt-1 text-sm text-[var(--lifeos-ink-soft)]">
+                      <p className="mt-1 text-sm text-[var(--avenoryn-ink-soft)]">
                         {warrantyStatusLabel(selected.warranty)}
                       </p>
                     </div>
@@ -628,13 +628,13 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
                   {selected.warranty ? (
                     <dl className="mt-3 grid gap-2 text-sm">
                       <div>
-                        <dt className="text-[var(--lifeos-ink-soft)]">
+                        <dt className="text-[var(--avenoryn-ink-soft)]">
                           Provider
                         </dt>
                         <dd>{selected.warranty.provider ?? "—"}</dd>
                       </div>
                       <div>
-                        <dt className="text-[var(--lifeos-ink-soft)]">
+                        <dt className="text-[var(--avenoryn-ink-soft)]">
                           Period
                         </dt>
                         <dd>
@@ -643,12 +643,12 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
                         </dd>
                       </div>
                       <div>
-                        <dt className="text-[var(--lifeos-ink-soft)]">Terms</dt>
+                        <dt className="text-[var(--avenoryn-ink-soft)]">Terms</dt>
                         <dd>{selected.warranty.terms ?? "—"}</dd>
                       </div>
                     </dl>
                   ) : (
-                    <p className="mt-3 text-sm text-[var(--lifeos-ink-soft)]">
+                    <p className="mt-3 text-sm text-[var(--avenoryn-ink-soft)]">
                       No warranty recorded for this purchase.
                     </p>
                   )}
@@ -683,7 +683,7 @@ export function PurchasesPanel({ openCreateRequested = false, onCreateRequestHan
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-[var(--lifeos-ink-soft)]">
+              <p className="text-sm text-[var(--avenoryn-ink-soft)]">
                 Select a purchase to view details, warranty, and receipt link.
               </p>
             )}

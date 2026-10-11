@@ -47,7 +47,7 @@ const emptyUploadForm: UploadFormState = {
 };
 
 function fieldClassName(): string {
-  return "w-full rounded-lg border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)] px-3.5 py-2.5 text-[var(--lifeos-ink)] outline-none transition focus:border-[var(--lifeos-accent)] focus:ring-2 focus:ring-[var(--lifeos-accent-soft)]";
+  return "w-full rounded-lg border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)] px-3.5 py-2.5 text-[var(--avenoryn-ink)] outline-none transition focus:border-[var(--avenoryn-accent)] focus:ring-2 focus:ring-[var(--avenoryn-accent-soft)]";
 }
 
 export function VaultPage() {
@@ -335,12 +335,12 @@ export function VaultPage() {
       </div>
 
       {error ? (
-        <p className="text-sm text-[var(--lifeos-danger)]" role="alert">
+        <p className="text-sm text-[var(--avenoryn-danger)]" role="alert">
           {error}
         </p>
       ) : null}
       {success ? (
-        <p className="text-sm text-[var(--lifeos-accent)]" role="status">
+        <p className="text-sm text-[var(--avenoryn-accent)]" role="status">
           {success}
         </p>
       ) : null}
@@ -348,12 +348,12 @@ export function VaultPage() {
       {showUpload ? (
         <form
           onSubmit={handleUpload}
-          className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5 shadow-sm"
+          className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5 shadow-sm"
         >
-          <h2 className="text-lg font-semibold tracking-tight text-[var(--lifeos-ink)]">
+          <h2 className="text-lg font-semibold tracking-tight text-[var(--avenoryn-ink)]">
             Upload document
           </h2>
-          <p className="text-sm text-[var(--lifeos-muted)]">
+          <p className="text-sm text-[var(--avenoryn-muted)]">
             Allowed types: PDF, JPEG, PNG, WEBP. Maximum size: 10 MB (or your
             configured limit).
           </p>
@@ -374,7 +374,7 @@ export function VaultPage() {
             />
 
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                 Category
               </span>
               <select
@@ -396,7 +396,7 @@ export function VaultPage() {
             </label>
 
             <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                 Status
               </span>
               <select
@@ -459,7 +459,7 @@ export function VaultPage() {
           </div>
 
           <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+            <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
               Description
             </span>
             <textarea
@@ -476,7 +476,7 @@ export function VaultPage() {
           </label>
 
           <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+            <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
               Notes
             </span>
             <textarea
@@ -512,13 +512,13 @@ export function VaultPage() {
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading documents…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading documents…</p>
       ) : documents.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] bg-white/50 px-5 py-10">
-          <p className="text-sm font-medium text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] bg-white/50 px-5 py-10">
+          <p className="text-sm font-medium text-[var(--avenoryn-ink-soft)]">
             No documents yet
           </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--lifeos-muted)]">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--avenoryn-muted)]">
             Add your first private document to the vault. Never upload real
             personal identity or financial documents during development.
           </p>
@@ -531,8 +531,8 @@ export function VaultPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-          <ul className="divide-y divide-[var(--lifeos-border)] overflow-hidden rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90">
+        <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+          <ul className="min-w-0 divide-y divide-[var(--avenoryn-border)] overflow-hidden rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90">
             {documents.map((doc) => {
               const isActive = doc.id === selectedId;
               return (
@@ -542,19 +542,19 @@ export function VaultPage() {
                     className={[
                       "flex w-full flex-col gap-1 px-4 py-4 text-left transition",
                       isActive
-                        ? "bg-[var(--lifeos-accent-soft)]"
+                        ? "bg-[var(--avenoryn-accent-soft)]"
                         : "hover:bg-white/80",
                     ].join(" ")}
                     onClick={() => setSelectedId(doc.id)}
                   >
-                    <span className="text-sm font-semibold text-[var(--lifeos-ink)]">
+                    <span className="break-words text-sm font-semibold text-[var(--avenoryn-ink)]">
                       {doc.title}
                     </span>
-                    <span className="text-xs text-[var(--lifeos-muted)]">
+                    <span className="text-xs text-[var(--avenoryn-muted)]">
                       {formatCategoryLabel(doc.category)} · {doc.status}
                       {doc.expiresOn ? ` · Expires ${doc.expiresOn}` : ""}
                     </span>
-                    <span className="text-xs text-[var(--lifeos-muted)]">
+                    <span className="text-xs text-[var(--avenoryn-muted)]">
                       v{doc.currentVersion?.versionNumber ?? "—"} ·{" "}
                       {doc.currentVersion?.originalFileName ?? "No file"} ·{" "}
                       {formatFileSize(doc.currentVersion?.sizeBytes)}
@@ -565,34 +565,34 @@ export function VaultPage() {
             })}
           </ul>
 
-          <div className="rounded-2xl border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)]/90 p-5">
+          <div className="min-w-0 rounded-2xl border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)]/90 p-5">
             {selected ? (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-[var(--lifeos-ink)]">
+                  <h2 className="break-words text-xl font-semibold tracking-tight text-[var(--avenoryn-ink)]">
                     {selected.title}
                   </h2>
-                  <p className="mt-1 text-sm text-[var(--lifeos-muted)]">
+                  <p className="mt-1 text-sm text-[var(--avenoryn-muted)]">
                     {formatCategoryLabel(selected.category)}
                   </p>
                 </div>
 
                 <dl className="grid gap-3 text-sm">
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Status</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Status</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {selected.status}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Issued / expires</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Issued / expires</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       {selected.issuedOn ?? "—"} / {selected.expiresOn ?? "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Current file</dt>
-                    <dd className="font-medium text-[var(--lifeos-ink)]">
+                    <dt className="text-[var(--avenoryn-muted)]">Current file</dt>
+                    <dd className="font-medium text-[var(--avenoryn-ink)]">
                       v{selected.currentVersion?.versionNumber ?? "—"} ·{" "}
                       {selected.currentVersion?.originalFileName ?? "—"} (
                       {selected.currentVersion?.mimeType ?? "unknown"},{" "}
@@ -601,8 +601,8 @@ export function VaultPage() {
                   </div>
                   {selected.description ? (
                     <div>
-                      <dt className="text-[var(--lifeos-muted)]">Description</dt>
-                      <dd className="text-[var(--lifeos-ink-soft)]">
+                      <dt className="text-[var(--avenoryn-muted)]">Description</dt>
+                      <dd className="text-[var(--avenoryn-ink-soft)]">
                         {selected.description}
                       </dd>
                     </div>
@@ -611,7 +611,7 @@ export function VaultPage() {
 
                 <form onSubmit={handleSaveMetadata} className="space-y-3">
                   <label className="block">
-                    <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                    <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                       Status
                     </span>
                     <select
@@ -630,7 +630,7 @@ export function VaultPage() {
                   </label>
 
                   <label className="block">
-                    <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                    <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                       Notes
                     </span>
                     <textarea
@@ -645,16 +645,16 @@ export function VaultPage() {
                   </Button>
                 </form>
 
-                <div className="space-y-3 border-t border-[var(--lifeos-border)] pt-4">
-                  <h3 className="text-sm font-semibold text-[var(--lifeos-ink)]">
+                <div className="space-y-3 border-t border-[var(--avenoryn-border)] pt-4">
+                  <h3 className="text-sm font-semibold text-[var(--avenoryn-ink)]">
                     Version history
                   </h3>
                   {versionsLoading ? (
-                    <p className="text-sm text-[var(--lifeos-muted)]">
+                    <p className="text-sm text-[var(--avenoryn-muted)]">
                       Loading versions…
                     </p>
                   ) : versions.length === 0 ? (
-                    <p className="text-sm text-[var(--lifeos-muted)]">
+                    <p className="text-sm text-[var(--avenoryn-muted)]">
                       No versions found.
                     </p>
                   ) : (
@@ -662,14 +662,14 @@ export function VaultPage() {
                       {versions.map((version) => (
                         <li
                           key={version.id}
-                          className="flex flex-col gap-2 rounded-lg border border-[var(--lifeos-border)] px-3 py-3 sm:flex-row sm:items-center sm:justify-between"
+                          className="flex flex-col gap-2 rounded-lg border border-[var(--avenoryn-border)] px-3 py-3 sm:flex-row sm:items-center sm:justify-between"
                         >
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-[var(--lifeos-ink)]">
+                            <p className="text-sm font-medium text-[var(--avenoryn-ink)]">
                               Version {version.versionNumber}
                               {version.isCurrent ? " · Current" : ""}
                             </p>
-                            <p className="truncate text-xs text-[var(--lifeos-muted)]">
+                            <p className="truncate text-xs text-[var(--avenoryn-muted)]">
                               {version.originalFileName ?? "file"} ·{" "}
                               {formatFileSize(version.sizeBytes)} ·{" "}
                               {formatUploadedAt(version.uploadedAt)}
@@ -696,7 +696,7 @@ export function VaultPage() {
                   )}
 
                   <form onSubmit={handleReplaceVersion} className="space-y-3">
-                    <p className="text-sm text-[var(--lifeos-muted)]">
+                    <p className="text-sm text-[var(--avenoryn-muted)]">
                       Upload a new version without deleting prior files.
                     </p>
                     <Input
@@ -709,7 +709,7 @@ export function VaultPage() {
                       }
                     />
                     <label className="block">
-                      <span className="mb-1.5 block text-sm font-medium text-[var(--lifeos-ink-soft)]">
+                      <span className="mb-1.5 block text-sm font-medium text-[var(--avenoryn-ink-soft)]">
                         Version notes (optional)
                       </span>
                       <textarea
@@ -725,7 +725,7 @@ export function VaultPage() {
                   </form>
                 </div>
 
-                <div className="flex flex-wrap gap-3 border-t border-[var(--lifeos-border)] pt-4">
+                <div className="flex flex-wrap gap-3 border-t border-[var(--avenoryn-border)] pt-4">
                   <Button
                     type="button"
                     onClick={() => {
@@ -738,7 +738,7 @@ export function VaultPage() {
                   <Button
                     type="button"
                     variant="ghost"
-                    className="text-[var(--lifeos-danger)]"
+                    className="text-[var(--avenoryn-danger)]"
                     onClick={() => {
                       void handleDelete(selected.id);
                     }}
@@ -749,7 +749,7 @@ export function VaultPage() {
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-[var(--lifeos-muted)]">
+              <p className="text-sm text-[var(--avenoryn-muted)]">
                 Select a document to view metadata, versions, download, or
                 delete it.
               </p>

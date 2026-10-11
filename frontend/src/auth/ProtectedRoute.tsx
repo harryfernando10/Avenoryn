@@ -8,7 +8,7 @@ export function ProtectedRoute() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center px-4">
-        <p className="text-sm text-[var(--lifeos-muted)]">Checking session…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Checking session…</p>
       </div>
     );
   }

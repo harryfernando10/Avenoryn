@@ -67,7 +67,7 @@ const emptyDeadlineForm: DeadlineFormState = {
 };
 
 function fieldClassName(): string {
-  return "w-full rounded-lg border border-[var(--lifeos-border)] bg-[var(--lifeos-surface)] px-3.5 py-2.5 text-[var(--lifeos-ink)] outline-none transition focus:border-[var(--lifeos-accent)] focus:ring-2 focus:ring-[var(--lifeos-accent-soft)]";
+  return "w-full rounded-lg border border-[var(--avenoryn-border)] bg-[var(--avenoryn-surface)] px-3.5 py-2.5 text-[var(--avenoryn-ink)] outline-none transition focus:border-[var(--avenoryn-accent)] focus:ring-2 focus:ring-[var(--avenoryn-accent-soft)]";
 }
 
 function optionalOrNull(value: string): string | null {
@@ -377,9 +377,9 @@ export function RenewalsPage() {
             onSubmit={(event) => {
               void handleRenewalSubmit(event);
             }}
-            className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-white/60 p-5"
+            className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-white/60 p-5"
           >
-            <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+            <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
               {editingId ? "Edit renewal" : "New renewal"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -395,7 +395,7 @@ export function RenewalsPage() {
                 }
               />
               <label className="block space-y-1.5 text-sm">
-                <span className="font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                   Kind
                 </span>
                 <select
@@ -428,7 +428,7 @@ export function RenewalsPage() {
                 }
               />
               <label className="block space-y-1.5 text-sm">
-                <span className="font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                   Status
                 </span>
                 <select
@@ -461,7 +461,7 @@ export function RenewalsPage() {
                 }
               />
               <label className="block space-y-1.5 text-sm">
-                <span className="font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                   Linked document
                 </span>
                 <select
@@ -484,7 +484,7 @@ export function RenewalsPage() {
               </label>
             </div>
             <label className="block space-y-1.5 text-sm">
-              <span className="font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                 Notes
               </span>
               <textarea
@@ -519,9 +519,9 @@ export function RenewalsPage() {
             onSubmit={(event) => {
               void handleDeadlineSubmit(event);
             }}
-            className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-white/60 p-5"
+            className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-white/60 p-5"
           >
-            <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+            <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
               {editingId ? "Edit deadline" : "New deadline"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -549,7 +549,7 @@ export function RenewalsPage() {
                 }
               />
               <label className="block space-y-1.5 text-sm">
-                <span className="font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                   Status
                 </span>
                 <select
@@ -582,7 +582,7 @@ export function RenewalsPage() {
                 }
               />
               <label className="block space-y-1.5 text-sm sm:col-span-2">
-                <span className="font-medium text-[var(--lifeos-ink-soft)]">
+                <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                   Linked document
                 </span>
                 <select
@@ -605,7 +605,7 @@ export function RenewalsPage() {
               </label>
             </div>
             <label className="block space-y-1.5 text-sm">
-              <span className="font-medium text-[var(--lifeos-ink-soft)]">
+              <span className="font-medium text-[var(--avenoryn-ink-soft)]">
                 Notes
               </span>
               <textarea
@@ -639,13 +639,13 @@ export function RenewalsPage() {
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--lifeos-muted)]">Loading…</p>
+        <p className="text-sm text-[var(--avenoryn-muted)]">Loading…</p>
       ) : isEmpty && !showForm ? (
-        <div className="rounded-2xl border border-dashed border-[var(--lifeos-border)] bg-white/50 px-5 py-10">
-          <p className="text-sm font-medium text-[var(--lifeos-ink-soft)]">
+        <div className="rounded-2xl border border-dashed border-[var(--avenoryn-border)] bg-white/50 px-5 py-10">
+          <p className="text-sm font-medium text-[var(--avenoryn-ink-soft)]">
             {tab === "renewals" ? "No renewals yet" : "No deadlines yet"}
           </p>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--lifeos-muted)]">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--avenoryn-muted)]">
             {tab === "renewals"
               ? "Add passports, licences, insurance, domains, and other lifecycle renewals with due dates and action URLs."
               : "Track applications, submissions, and appointments that need attention by a date."}
@@ -662,16 +662,16 @@ export function RenewalsPage() {
                   className={[
                     "w-full rounded-xl border px-4 py-3 text-left transition",
                     selectedId === item.id
-                      ? "border-[var(--lifeos-accent)] bg-[var(--lifeos-accent-soft)]"
-                      : "border-[var(--lifeos-border)] bg-white/60 hover:border-[var(--lifeos-accent)]/40",
+                      ? "border-[var(--avenoryn-accent)] bg-[var(--avenoryn-accent-soft)]"
+                      : "border-[var(--avenoryn-border)] bg-white/60 hover:border-[var(--avenoryn-accent)]/40",
                   ].join(" ")}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="font-medium text-[var(--lifeos-ink)]">
+                      <p className="font-medium text-[var(--avenoryn-ink)]">
                         {item.title}
                       </p>
-                      <p className="mt-1 text-sm text-[var(--lifeos-muted)]">
+                      <p className="mt-1 text-sm text-[var(--avenoryn-muted)]">
                         {formatKindLabel(item.kind)} · Due {item.dueOn} ·{" "}
                         {formatStatusLabel(item.status)}
                       </p>
@@ -683,32 +683,32 @@ export function RenewalsPage() {
           </ul>
 
           {selectedRenewal ? (
-            <aside className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-white/60 p-5">
-              <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+            <aside className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-white/60 p-5">
+              <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
                 {selectedRenewal.title}
               </h2>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-[var(--lifeos-muted)]">Kind</dt>
+                  <dt className="text-[var(--avenoryn-muted)]">Kind</dt>
                   <dd>{formatKindLabel(selectedRenewal.kind)}</dd>
                 </div>
                 <div>
-                  <dt className="text-[var(--lifeos-muted)]">Due on</dt>
+                  <dt className="text-[var(--avenoryn-muted)]">Due on</dt>
                   <dd>{selectedRenewal.dueOn}</dd>
                 </div>
                 <div>
-                  <dt className="text-[var(--lifeos-muted)]">Status</dt>
+                  <dt className="text-[var(--avenoryn-muted)]">Status</dt>
                   <dd>{formatStatusLabel(selectedRenewal.status)}</dd>
                 </div>
                 {selectedRenewal.actionUrl ? (
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Action</dt>
+                    <dt className="text-[var(--avenoryn-muted)]">Action</dt>
                     <dd>
                       <a
                         href={selectedRenewal.actionUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[var(--lifeos-accent)] underline"
+                        className="text-[var(--avenoryn-accent)] underline"
                       >
                         Open link
                       </a>
@@ -717,13 +717,13 @@ export function RenewalsPage() {
                 ) : null}
                 {selectedRenewal.linkedDocumentTitle ? (
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Document</dt>
+                    <dt className="text-[var(--avenoryn-muted)]">Document</dt>
                     <dd>{selectedRenewal.linkedDocumentTitle}</dd>
                   </div>
                 ) : null}
                 {selectedRenewal.notes ? (
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Notes</dt>
+                    <dt className="text-[var(--avenoryn-muted)]">Notes</dt>
                     <dd className="whitespace-pre-wrap">
                       {selectedRenewal.notes}
                     </dd>
@@ -761,14 +761,14 @@ export function RenewalsPage() {
                   className={[
                     "w-full rounded-xl border px-4 py-3 text-left transition",
                     selectedId === item.id
-                      ? "border-[var(--lifeos-accent)] bg-[var(--lifeos-accent-soft)]"
-                      : "border-[var(--lifeos-border)] bg-white/60 hover:border-[var(--lifeos-accent)]/40",
+                      ? "border-[var(--avenoryn-accent)] bg-[var(--avenoryn-accent-soft)]"
+                      : "border-[var(--avenoryn-border)] bg-white/60 hover:border-[var(--avenoryn-accent)]/40",
                   ].join(" ")}
                 >
-                  <p className="font-medium text-[var(--lifeos-ink)]">
+                  <p className="font-medium text-[var(--avenoryn-ink)]">
                     {item.title}
                   </p>
-                  <p className="mt-1 text-sm text-[var(--lifeos-muted)]">
+                  <p className="mt-1 text-sm text-[var(--avenoryn-muted)]">
                     Due {item.dueOn} · {formatStatusLabel(item.status)}
                   </p>
                 </button>
@@ -777,28 +777,28 @@ export function RenewalsPage() {
           </ul>
 
           {selectedDeadline ? (
-            <aside className="space-y-4 rounded-2xl border border-[var(--lifeos-border)] bg-white/60 p-5">
-              <h2 className="text-lg font-semibold text-[var(--lifeos-ink)]">
+            <aside className="space-y-4 rounded-2xl border border-[var(--avenoryn-border)] bg-white/60 p-5">
+              <h2 className="text-lg font-semibold text-[var(--avenoryn-ink)]">
                 {selectedDeadline.title}
               </h2>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-[var(--lifeos-muted)]">Due on</dt>
+                  <dt className="text-[var(--avenoryn-muted)]">Due on</dt>
                   <dd>{selectedDeadline.dueOn}</dd>
                 </div>
                 <div>
-                  <dt className="text-[var(--lifeos-muted)]">Status</dt>
+                  <dt className="text-[var(--avenoryn-muted)]">Status</dt>
                   <dd>{formatStatusLabel(selectedDeadline.status)}</dd>
                 </div>
                 {selectedDeadline.actionUrl ? (
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Action</dt>
+                    <dt className="text-[var(--avenoryn-muted)]">Action</dt>
                     <dd>
                       <a
                         href={selectedDeadline.actionUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[var(--lifeos-accent)] underline"
+                        className="text-[var(--avenoryn-accent)] underline"
                       >
                         Open link
                       </a>
@@ -807,13 +807,13 @@ export function RenewalsPage() {
                 ) : null}
                 {selectedDeadline.linkedDocumentTitle ? (
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Document</dt>
+                    <dt className="text-[var(--avenoryn-muted)]">Document</dt>
                     <dd>{selectedDeadline.linkedDocumentTitle}</dd>
                   </div>
                 ) : null}
                 {selectedDeadline.notes ? (
                   <div>
-                    <dt className="text-[var(--lifeos-muted)]">Notes</dt>
+                    <dt className="text-[var(--avenoryn-muted)]">Notes</dt>
                     <dd className="whitespace-pre-wrap">
                       {selectedDeadline.notes}
                     </dd>

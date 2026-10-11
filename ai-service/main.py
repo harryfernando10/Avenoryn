@@ -1,4 +1,4 @@
-"""Optional, database-free OCR and structured suggestion service for LifeOS."""
+"""Optional, database-free OCR and structured suggestion service for Avenoryn."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 load_dotenv()
-app = FastAPI(title="LifeOS optional AI service", docs_url=None, redoc_url=None)
+app = FastAPI(title="Avenoryn optional AI service", docs_url=None, redoc_url=None)
 
 
 class Category(str, Enum):
@@ -87,8 +87,9 @@ class Suggestion(BaseModel):
 class ProcessResponse(BaseModel):
     extractedText: str
     textSource: Literal["pdf-text", "ocr"]
-    suggestion: Suggestion
-    externalProviderUsed: bool = True
+    suggestion: Suggestion | None = None
+    externalProviderUsed: bool = False
+    suggestionError: str | None = None
 
 
 class ServiceError(Exception):
@@ -198,8 +199,12 @@ def process_document(contents: bytes, mime_type: str) -> ProcessResponse:
     text, source = extract_text(contents, mime_type)
     if not text.strip():
         raise ServiceError("NO_EXTRACTABLE_TEXT", "No text could be extracted from this file.", 422)
-    suggestion = _provider_suggestion(text)
-    return ProcessResponse(extractedText=text, textSource=source, suggestion=suggestion)
+    try:
+        suggestion = _provider_suggestion(text)
+        return ProcessResponse(extractedText=text, textSource=source, suggestion=suggestion, externalProviderUsed=True)
+    except ServiceError as exc:
+        # Local extraction remains useful when optional structured suggestions are disabled or fail.
+        return ProcessResponse(extractedText=text, textSource=source, suggestion=None, externalProviderUsed=False, suggestionError=exc.message)
 
 
 def require_service_token(authorization: str | None) -> None:
@@ -214,6 +219,13 @@ def require_service_token(authorization: str | None) -> None:
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/ready")
+def ready():
+    if not os.getenv("AI_SERVICE_TOKEN", "").strip():
+        raise HTTPException(status_code=503, detail={"code": "AI_SERVICE_UNAVAILABLE", "error": "Set AI_SERVICE_TOKEN in ai-service/.env."})
+    return {"status": "ready"}
 
 
 @app.post("/v1/process", response_model=ProcessResponse)
